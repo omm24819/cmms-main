@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!-- ========================================= -->
+    <!-- 1. CREATE TABLE (only if not exists) -->
+    <!-- ========================================= -->
+    <changeSet id="create-parts-table-001" author="sambit">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="parts"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="parts">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="part_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="TEXT"/>
+
+            <column name="stock_quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="unit_price" type="NUMERIC(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="TIMESTAMP"/>
+
+        </createTable>
+
+    </changeSet>
+
+
+    <!-- ========================================= -->
+    <!-- 2. ADD MISSING COLUMNS (for existing table) -->
+    <!-- ========================================= -->
+    <changeSet id="add-missing-columns-002" author="sambit">
+
+        <!-- Add created_at if missing -->
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="parts" columnName="created_at"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="parts">
+            <column name="created_at" type="TIMESTAMP"
+                    defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+
+    <changeSet id="add-updated-at-column-003" author="sambit">
+
+        <!-- Add updated_at if missing -->
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="parts" columnName="updated_at"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="parts">
+            <column name="updated_at" type="TIMESTAMP"/>
+        </addColumn>
+
+    </changeSet>
+
+    <changeSet id="add-description-column-004" author="sambit">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="parts" columnName="description"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="parts">
+            <column name="description" type="TEXT"/>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

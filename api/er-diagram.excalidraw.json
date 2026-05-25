@@ -1,0 +1,385 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {"type":"text","id":"title","x":80,"y":-30,"width":600,"height":35,"fontSize":28,"fontFamily":"Helvetica","fontWeight":"bold","text":"CMMS Entity-Relationship Diagram","strokeColor":"#1e1e1e","backgroundColor":"transparent"},
+
+    {"type":"rectangle","id":"company","x":40,"y":20,"width":290,"height":180,"strokeColor":"#1e1e1e","backgroundColor":"#e3f2fd","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"company-t","x":50,"y":30,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🏢 Company","strokeColor":"#0d47a1"},
+    {"type":"text","id":"company-f","x":50,"y":58,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, address, phone\nwebsite, email\nemployeesCount\ncity, state, zipCode\ndemo, firstWorkOrderCreated\ninvitedUsers, importedAssets","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"subscription","x":370,"y":20,"width":270,"height":140,"strokeColor":"#1e1e1e","backgroundColor":"#fff3e0","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"subscription-t","x":380,"y":30,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"💳 Subscription","strokeColor":"#e65100"},
+    {"type":"text","id":"subscription-f","x":380,"y":58,"fontSize":11,"fontFamily":"monospace","text":"PK id\nusersCount, monthly\nactivated, paddleSubscriptionId\nstartsOn, endsOn\nFK subscriptionPlan -> 1:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"subscriptionplan","x":680,"y":20,"width":250,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#fce4ec","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"subscriptionplan-t","x":690,"y":30,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📋 SubscriptionPlan","strokeColor":"#880e4f"},
+    {"type":"text","id":"subscriptionplan-f","x":690,"y":58,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, code\nmonthlyCostPerUser\nyearlyCostPerUser\nfeatures (Set)","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"companysettings","x":40,"y":240,"width":290,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#e8f5e9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"companysettings-t","x":50,"y":250,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"⚙️ CompanySettings","strokeColor":"#1b5e20"},
+    {"type":"text","id":"companysettings-f","x":50,"y":278,"fontSize":11,"fontFamily":"monospace","text":"PK id\nFK generalPreferences -> 1:1\nFK workOrderConfiguration -> 1:1\nFK uiConfiguration -> 1:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"user","x":370,"y":200,"width":290,"height":200,"strokeColor":"#1e1e1e","backgroundColor":"#f3e5f5","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"user-t","x":380,"y":210,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"👤 User","strokeColor":"#4a148c"},
+    {"type":"text","id":"user-f","x":380,"y":238,"fontSize":11,"fontFamily":"monospace","text":"PK id\nfirstName, lastName\nemail (unique), username\npassword, phone, jobTitle\nrate, lastLogin, enabled\nFK role -> N:1\nFK company -> N:1\nFK location -> N:1\nFK userSettings -> 1:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"role","x":700,"y":180,"width":270,"height":160,"strokeColor":"#1e1e1e","backgroundColor":"#fff8e1","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"role-t","x":710,"y":190,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔐 Role","strokeColor":"#f57f17"},
+    {"type":"text","id":"role-f","x":710,"y":218,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, roleType, code\ndescription, paid\ncreatePermissions (Set)\nviewPermissions (Set)\nviewOtherPermissions (Set)\neditOtherPermissions (Set)","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"usersettings","x":370,"y":440,"width":250,"height":110,"strokeColor":"#1e1e1e","backgroundColor":"#e0f7fa","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"usersettings-t","x":380,"y":450,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔧 UserSettings","strokeColor":"#006064"},
+    {"type":"text","id":"usersettings-f","x":380,"y":478,"fontSize":11,"fontFamily":"monospace","text":"PK id\nemailNotified\nemailUpdatesForWO\nemailUpdatesForRequests\nstatsForAssignedWO","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"location","x":1010,"y":20,"width":270,"height":150,"strokeColor":"#1e1e1e","backgroundColor":"#e8eaf6","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"location-t","x":1020,"y":30,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📍 Location","strokeColor":"#1a237e"},
+    {"type":"text","id":"location-f","x":1020,"y":58,"fontSize":11,"fontFamily":"monospace","text":"PK id\ncustomId, name, address\nlongitude, latitude\nisDemo\nFK parentLocation -> N:1\nM:M workers, teams\nM:M vendors, customers","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"team","x":1010,"y":210,"width":230,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#fce4ec","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"team-t","x":1020,"y":220,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"👥 Team","strokeColor":"#880e4f"},
+    {"type":"text","id":"team-f","x":1020,"y":248,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, description\nM:M users\nM:M assets, locations","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"workorder","x":1330,"y":20,"width":310,"height":200,"strokeColor":"#1e1e1e","backgroundColor":"#fff9c4","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"workorder-t","x":1340,"y":30,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📝 WorkOrder","strokeColor":"#f57f17"},
+    {"type":"text","id":"workorder-f","x":1340,"y":58,"fontSize":11,"fontFamily":"monospace","text":"PK id\ncustomId, status\ncompletedOn, feedback\narchived, isDemo, signature\nFK completedBy -> N:1\nFK parentRequest -> N:1\nFK parentPM -> N:1\n1:N tasks, labors, costs\n1:N comments, parts used","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"request","x":1330,"y":260,"width":270,"height":130,"strokeColor":"#1e1e1e","backgroundColor":"#ffe0b2","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"request-t","x":1340,"y":270,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📋 Request","strokeColor":"#e65100"},
+    {"type":"text","id":"request-f","x":1340,"y":298,"fontSize":11,"fontFamily":"monospace","text":"PK id\ncustomId, cancelled\ncancellationReason, contact\nFK workOrder -> 1:1\nFK requestPortal -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"asset","x":1700,"y":20,"width":290,"height":240,"strokeColor":"#1e1e1e","backgroundColor":"#c8e6c9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"asset-t","x":1710,"y":30,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔧 Asset","strokeColor":"#1b5e20"},
+    {"type":"text","id":"asset-f","x":1710,"y":58,"fontSize":11,"fontFamily":"monospace","text":"PK id\ncustomId, name\ndescription, area\nbarCode, serialNumber\nmodel, manufacturer\nacquisitionCost, nfcId\nwarrantyExpirationDate\ninServiceDate, status\nFK location -> N:1\nFK parentAsset -> N:1\nFK category -> N:1\nFK primaryUser -> N:1\nFK deprecation -> 1:1\nM:M assignedTo, teams\nM:M vendors, parts","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"assetcategory","x":2050,"y":20,"width":210,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#dcedc8","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"assetcategory-t","x":2060,"y":30,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📂 AssetCategory","strokeColor":"#33691e"},
+    {"type":"text","id":"assetcategory-f","x":2060,"y":58,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname\nFK companySettings","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"part","x":1700,"y":300,"width":290,"height":220,"strokeColor":"#1e1e1e","backgroundColor":"#b3e5fc","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"part-t","x":1710,"y":310,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔩 Part","strokeColor":"#01579b"},
+    {"type":"text","id":"part-f","x":1710,"y":338,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, description\ncost, quantity\nminQuantity, unit\nbarcode, area\nnonStock, isDemo\nFK category -> N:1\nM:M assignedTo, teams\nM:M customers, vendors\nM:M assets, files","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"partcategory","x":2050,"y":300,"width":210,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#b2dfdb","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"partcategory-t","x":2060,"y":310,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📂 PartCategory","strokeColor":"#004d40"},
+    {"type":"text","id":"partcategory-f","x":2060,"y":338,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname\nFK companySettings","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"vendor","x":2050,"y":420,"width":210,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#ffccbc","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"vendor-t","x":2060,"y":430,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🏭 Vendor","strokeColor":"#bf360c"},
+    {"type":"text","id":"vendor-f","x":2060,"y":458,"fontSize":11,"fontFamily":"monospace","text":"PK id\ncompanyName\nvendorType, description\nrate, isDemo\nM:M assets\nM:M locations, parts","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"customer","x":1700,"y":560,"width":230,"height":140,"strokeColor":"#1e1e1e","backgroundColor":"#f8bbd9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"customer-t","x":1710,"y":570,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"👔 Customer","strokeColor":"#880e4f"},
+    {"type":"text","id":"customer-f","x":1710,"y":598,"fontSize":11,"fontFamily":"monospace","text":"PK id\ncustomerType\ndescription, rate\nbillingName, address\nFK billingCurrency\nM:M parts, locations\nM:M assets","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"meter","x":1330,"y":430,"width":270,"height":150,"strokeColor":"#1e1e1e","backgroundColor":"#d1c4e9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"meter-t","x":1340,"y":440,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📊 Meter","strokeColor":"#311b92"},
+    {"type":"text","id":"meter-f","x":1340,"y":468,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, unit\nupdateFrequency\nFK meterCategory -> N:1\nFK location -> N:1\nFK asset -> N:1\nM:M users\n1:N readings","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"metercategory","x":1650,"y":560,"width":210,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#e1bee7","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"metercategory-t","x":1660,"y":570,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📂 MeterCategory","strokeColor":"#4a148c"},
+    {"type":"text","id":"metercategory-f","x":1660,"y":598,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname\nFK companySettings","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"reading","x":1650,"y":430,"width":190,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#bbdefb","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"reading-t","x":1660,"y":440,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📈 Reading","strokeColor":"#0d47a1"},
+    {"type":"text","id":"reading-f","x":1660,"y":468,"fontSize":11,"fontFamily":"monospace","text":"PK id\nvalue\nFK meter -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"preventivemaintenance","x":1010,"y":350,"width":290,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#ffcdd2","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"preventivemaintenance-t","x":1020,"y":360,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔄 PreventiveMaintenance","strokeColor":"#b71c1c"},
+    {"type":"text","id":"preventivemaintenance-f","x":1020,"y":388,"fontSize":11,"fontFamily":"monospace","text":"PK id\ncustomId, name\nisDemo\nFK schedule -> 1:1\n1:N workOrders generated","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"schedule","x":700,"y":380,"width":270,"height":150,"strokeColor":"#1e1e1e","backgroundColor":"#ffebee","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"schedule-t","x":710,"y":390,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📅 Schedule","strokeColor":"#c62828"},
+    {"type":"text","id":"schedule-f","x":710,"y":418,"fontSize":11,"fontFamily":"monospace","text":"PK id\ndisabled, isDemo\nstartsOn, endsOn\nfrequency, dueDateDelay\nrecurrenceType\nrecurrenceBasedOn\ndaysOfWeek (List)\nFK PM -> 1:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"workordermetertrigger","x":1010,"y":510,"width":290,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#f8bbd0","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"workordermetertrigger-t","x":1020,"y":520,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"⚡ WorkOrderMeterTrigger","strokeColor":"#ad1457"},
+    {"type":"text","id":"workordermetertrigger-f","x":1020,"y":548,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, recurrent\ntriggerCondition\nvalue, waitBefore\nFK meter -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"labor","x":370,"y":590,"width":250,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#cfd8dc","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"labor-t","x":380,"y":600,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"⏱️ Labor","strokeColor":"#263238"},
+    {"type":"text","id":"labor-f","x":380,"y":628,"fontSize":11,"fontFamily":"monospace","text":"PK id\nincludeToTotalTime\nlogged, hourlyRate\nstartedAt, status\nFK assignedTo -> N:1\nFK timeCategory -> N:1\nFK workOrder -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"timecategory","x":660,"y":590,"width":190,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#b0bec5","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"timecategory-t","x":670,"y":600,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📂 TimeCategory","strokeColor":"#37474f"},
+    {"type":"text","id":"timecategory-f","x":670,"y":628,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname\nFK companySettings","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"additionalcost","x":370,"y":750,"width":250,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#ffe082","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"additionalcost-t","x":380,"y":760,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"💰 AdditionalCost","strokeColor":"#f57f17"},
+    {"type":"text","id":"additionalcost-f","x":380,"y":788,"fontSize":11,"fontFamily":"monospace","text":"PK id\ndescription\nincludeToTotalCost\ndate, isDemo\nFK assignedTo -> N:1\nFK workOrder -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"costcategory","x":660,"y":730,"width":190,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#ffecb3","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"costcategory-t","x":670,"y":740,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📂 CostCategory","strokeColor":"#f9a825"},
+    {"type":"text","id":"costcategory-f","x":670,"y":768,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname\nFK companySettings","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"partconsumption","x":660,"y":850,"width":230,"height":90,"strokeColor":"#1e1e1e","backgroundColor":"#b2dfdb","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"partconsumption-t","x":670,"y":860,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📦 PartConsumption","strokeColor":"#004d40"},
+    {"type":"text","id":"partconsumption-f","x":670,"y":888,"fontSize":11,"fontFamily":"monospace","text":"PK id\nquantity\nFK part -> N:1\nFK workOrder -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"purchaseorder","x":930,"y":850,"width":270,"height":150,"strokeColor":"#1e1e1e","backgroundColor":"#ffab91","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"purchaseorder-t","x":940,"y":860,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🛒 PurchaseOrder","strokeColor":"#d84315"},
+    {"type":"text","id":"purchaseorder-f","x":940,"y":888,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, status\nisDemo, shippingDueDate\nshipping address fields\nFK category -> N:1\nFK vendor -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"purchaseordercategory","x":1240,"y":850,"width":230,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#ffcc80","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"purchaseordercategory-t","x":1250,"y":860,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📂 PurchaseOrderCategory","strokeColor":"#ef6c00"},
+    {"type":"text","id":"purchaseordercategory-f","x":1250,"y":888,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname\nFK companySettings","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"workordercategory","x":1700,"y":740,"width":230,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#fff59d","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"workordercategory-t","x":1710,"y":750,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📂 WorkOrderCategory","strokeColor":"#f9a825"},
+    {"type":"text","id":"workordercategory-f","x":1710,"y":778,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname\nFK companySettings","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"file","x":2050,"y":580,"width":250,"height":140,"strokeColor":"#1e1e1e","backgroundColor":"#c5cae9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"file-t","x":2060,"y":590,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📎 File","strokeColor":"#1a237e"},
+    {"type":"text","id":"file-f","x":2060,"y":618,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, path\ntype, hidden\nFK task -> N:1\nM:M assets, parts\nM:M requests, WOs\nM:M locations","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"comment","x":1330,"y":590,"width":230,"height":110,"strokeColor":"#1e1e1e","backgroundColor":"#f0f4c3","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"comment-t","x":1340,"y":600,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"💬 Comment","strokeColor":"#827717"},
+    {"type":"text","id":"comment-f","x":1340,"y":628,"fontSize":11,"fontFamily":"monospace","text":"PK id\ncontent\nFK workOrder -> N:1\nFK user -> N:1\nfiles (List)","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"notification","x":1330,"y":740,"width":230,"height":110,"strokeColor":"#1e1e1e","backgroundColor":"#e1f5fe","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"notification-t","x":1340,"y":750,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔔 Notification","strokeColor":"#0277bd"},
+    {"type":"text","id":"notification-f","x":1340,"y":778,"fontSize":11,"fontFamily":"monospace","text":"PK id\nmessage, seen\nnotificationType\nresourceId\nFK user -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"taskbase","x":930,"y":590,"width":230,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#d7ccc8","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"taskbase-t","x":940,"y":600,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📋 TaskBase","strokeColor":"#3e2723"},
+    {"type":"text","id":"taskbase-f","x":940,"y":628,"fontSize":11,"fontFamily":"monospace","text":"PK id\nlabel, taskType\nFK user -> N:1\nFK asset -> N:1\nFK meter -> N:1\n1:N options","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"task","x":930,"y":750,"width":230,"height":110,"strokeColor":"#1e1e1e","backgroundColor":"#a1887f","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"task-t","x":940,"y":760,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"✅ Task","strokeColor":"#3e2723"},
+    {"type":"text","id":"task-f","x":940,"y":788,"fontSize":11,"fontFamily":"monospace","text":"PK id\nnotes, value\nFK taskBase -> N:1\nFK workOrder -> N:1\nFK PM -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"taskoption","x":1200,"y":590,"width":190,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#efebe9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"taskoption-t","x":1210,"y":600,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔘 TaskOption","strokeColor":"#4e342e"},
+    {"type":"text","id":"taskoption-f","x":1210,"y":628,"fontSize":11,"fontFamily":"monospace","text":"PK id\nlabel\nFK taskBase -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"checklist","x":1200,"y":710,"width":230,"height":110,"strokeColor":"#1e1e1e","backgroundColor":"#cfd8dc","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"checklist-t","x":1210,"y":720,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📝 Checklist","strokeColor":"#37474f"},
+    {"type":"text","id":"checklist-f","x":1210,"y":748,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, description\ncategory\nFK companySettings\ntaskBases (List)","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"workflow","x":40,"y":380,"width":270,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#e0e0e0","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"workflow-t","x":50,"y":390,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"⚙️ Workflow","strokeColor":"#212121"},
+    {"type":"text","id":"workflow-f","x":50,"y":418,"fontSize":11,"fontFamily":"monospace","text":"PK id\ntitle, mainCondition\nenabled\nsecondaryConditions\nFK action -> 1:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"workflowaction","x":40,"y":540,"width":270,"height":150,"strokeColor":"#1e1e1e","backgroundColor":"#bdbdbd","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"workflowaction-t","x":50,"y":550,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"▶️ WorkflowAction","strokeColor":"#212121"},
+    {"type":"text","id":"workflowaction-f","x":50,"y":578,"fontSize":11,"fontFamily":"monospace","text":"PK id\nWO/Request/PO actions\npartAction, taskAction\npriority\nFK asset, location\nFK user, team\nFK WOCategory\nvalue, assetStatus","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"workflowcondition","x":40,"y":730,"width":270,"height":170,"strokeColor":"#1e1e1e","backgroundColor":"#9e9e9e","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"workflowcondition-t","x":50,"y":740,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔍 WorkflowCondition","strokeColor":"#212121"},
+    {"type":"text","id":"workflowcondition-f","x":50,"y":768,"fontSize":11,"fontFamily":"monospace","text":"PK id\nWO/Request/PO conditions\npartCondition, taskCondition\nFK asset, location\nFK user, team, vendor\nFK part, WOCategory\nWO status\nstartDate, endDate","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"customfield","x":370,"y":910,"width":250,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#d1c4e9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"customfield-t","x":380,"y":920,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔧 CustomField","strokeColor":"#311b92"},
+    {"type":"text","id":"customfield-f","x":380,"y":948,"fontSize":11,"fontFamily":"monospace","text":"PK id\nlabel, fieldType\nentityType, required\ncopyOnRepeat, order\noptions (List)\nFK companySettings","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"customfieldvalue","x":660,"y":1000,"width":270,"height":150,"strokeColor":"#1e1e1e","backgroundColor":"#b39ddb","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"customfieldvalue-t","x":670,"y":1010,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📝 CustomFieldValue","strokeColor":"#311b92"},
+    {"type":"text","id":"customfieldvalue-f","x":670,"y":1038,"fontSize":11,"fontFamily":"monospace","text":"PK id\nvalue\nFK customField -> N:1\nFK workOrder, asset\nFK location, customer\nFK vendor, part\nFK meter, PM, request","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"currency","x":970,"y":1080,"width":190,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#80cbc4","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"currency-t","x":980,"y":1090,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"💵 Currency","strokeColor":"#004d40"},
+    {"type":"text","id":"currency-f","x":980,"y":1118,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname (unique)\ncode (unique)","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"deprecation","x":2050,"y":180,"width":230,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#ffecb3","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"deprecation-t","x":2060,"y":190,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📉 Deprecation","strokeColor":"#f9a825"},
+    {"type":"text","id":"deprecation-f","x":2060,"y":218,"fontSize":11,"fontFamily":"monospace","text":"PK id\npurchasePrice\npurchaseDate\nresidualValue\nusefulLife, rate\ncurrentValue","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"floorplan","x":1330,"y":890,"width":230,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#b3e5fc","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"floorplan-t","x":1340,"y":900,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🗺️ FloorPlan","strokeColor":"#01579b"},
+    {"type":"text","id":"floorplan-f","x":1340,"y":928,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname, area\nFK image -> N:1\nFK location -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"assetdowntime","x":1590,"y":890,"width":230,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#ffcdd2","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"assetdowntime-t","x":1600,"y":900,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"⏸️ AssetDowntime","strokeColor":"#b71c1c"},
+    {"type":"text","id":"assetdowntime-f","x":1600,"y":928,"fontSize":11,"fontFamily":"monospace","text":"PK id\nduration\nstartsOn\nFK asset -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"relation","x":1700,"y":860,"width":230,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#ffe0b2","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"relation-t","x":1710,"y":870,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔗 Relation","strokeColor":"#e65100"},
+    {"type":"text","id":"relation-f","x":1710,"y":898,"fontSize":11,"fontFamily":"monospace","text":"PK id\nrelationType\nFK parent WO -> N:1\nFK child WO -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"workorderhistory","x":1960,"y":860,"width":230,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#c8e6c9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"workorderhistory-t","x":1970,"y":870,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📜 WorkOrderHistory","strokeColor":"#1b5e20"},
+    {"type":"text","id":"workorderhistory-f","x":1970,"y":898,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname\nFK user -> N:1\nFK workOrder -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"multiparts","x":2050,"y":760,"width":210,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#b2dfdb","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"multiparts-t","x":2060,"y":770,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📦 MultiParts","strokeColor":"#004d40"},
+    {"type":"text","id":"multiparts-f","x":2060,"y":798,"fontSize":11,"fontFamily":"monospace","text":"PK id\nname\nM:M parts","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"requestportal","x":1590,"y":1030,"width":250,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#f8bbd9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"requestportal-t","x":1600,"y":1040,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🌐 RequestPortal","strokeColor":"#880e4f"},
+    {"type":"text","id":"requestportal-f","x":1600,"y":1068,"fontSize":11,"fontFamily":"monospace","text":"PK id\ntitle, welcomeMessage\nuuid\n1:N fields","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"requestportalfield","x":1870,"y":1030,"width":230,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#f48fb1","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"requestportalfield-t","x":1880,"y":1040,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔲 RequestPortalField","strokeColor":"#880e4f"},
+    {"type":"text","id":"requestportalfield-f","x":1880,"y":1068,"fontSize":11,"fontFamily":"monospace","text":"PK id\ntype, required\nFK location -> N:1\nFK asset -> N:1\nFK portal -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"userinvitation","x":970,"y":1030,"width":190,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#e1bee7","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"userinvitation-t","x":980,"y":1040,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📧 UserInvitation","strokeColor":"#4a148c"},
+    {"type":"text","id":"userinvitation-f","x":980,"y":1068,"fontSize":11,"fontFamily":"monospace","text":"PK id\nemail\nFK role -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"verificationtoken","x":370,"y":1080,"width":230,"height":100,"strokeColor":"#1e1e1e","backgroundColor":"#bbdefb","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"verificationtoken-t","x":380,"y":1090,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🎫 VerificationToken","strokeColor":"#0d47a1"},
+    {"type":"text","id":"verificationtoken-f","x":380,"y":1118,"fontSize":11,"fontFamily":"monospace","text":"PK id\ntoken, payload\ncreatedAt, expiryDate\nFK user -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"pushnotificationtoken","x":40,"y":940,"width":270,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#c5cae9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"pushnotificationtoken-t","x":50,"y":950,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📱 PushNotificationToken","strokeColor":"#1a237e"},
+    {"type":"text","id":"pushnotificationtoken-f","x":50,"y":978,"fontSize":11,"fontFamily":"monospace","text":"PK id\ntoken\nFK user -> N:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"superaccountrelation","x":40,"y":1060,"width":270,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#90caf9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"superaccountrelation-t","x":50,"y":1070,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔗 SuperAccountRelation","strokeColor":"#0d47a1"},
+    {"type":"text","id":"superaccountrelation-f","x":50,"y":1098,"fontSize":11,"fontFamily":"monospace","text":"PK id\nFK superUser -> N:1\nFK childUser -> 1:1","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"subscriptionchangerequest","x":1200,"y":1030,"width":270,"height":80,"strokeColor":"#1e1e1e","backgroundColor":"#ffcc80","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"subscriptionchangerequest-t","x":1210,"y":1040,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"📝 SubscriptionChangeRequest","strokeColor":"#ef6c00"},
+    {"type":"text","id":"subscriptionchangerequest-f","x":1210,"y":1068,"fontSize":11,"fontFamily":"monospace","text":"PK id\ncode, monthly\nusersCount","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"apikey","x":40,"y":1180,"width":270,"height":90,"strokeColor":"#1e1e1e","backgroundColor":"#ffe0b2","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"apikey-t","x":50,"y":1190,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🔑 ApiKey","strokeColor":"#e65100"},
+    {"type":"text","id":"apikey-f","x":50,"y":1218,"fontSize":11,"fontFamily":"monospace","text":"PK id\nlabel, code\nFK user -> N:1\nlastUsed","strokeColor":"#333"},
+
+    {"type":"rectangle","id":"webhookendpoint","x":370,"y":1220,"width":270,"height":110,"strokeColor":"#1e1e1e","backgroundColor":"#c5cae9","fillStyle":"solid","strokeWidth":2},
+    {"type":"text","id":"webhookendpoint-t","x":380,"y":1230,"fontSize":18,"fontFamily":"Helvetica","fontWeight":"bold","text":"🪝 WebhookEndpoint","strokeColor":"#1a237e"},
+    {"type":"text","id":"webhookendpoint-f","x":380,"y":1258,"fontSize":11,"fontFamily":"monospace","text":"PK id\nurl, secret\nenabled, serialize\nevent\nlastTriggeredAt\nstatuses, categories","strokeColor":"#333"},
+
+    {"type":"line","id":"line-company-subscription","x1":330,"y1":110,"x2":370,"y2":110,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle","start":null,"end":null},
+    {"type":"text","id":"label-company-subscription","x":335,"y":95,"fontSize":11,"text":"1:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-subscription-plan","x1":640,"y1":90,"x2":680,"y2":90,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-subscription-plan","x":645,"y":75,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-company-settings","x1":185,"y1":200,"x2":185,"y2":240,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-company-settings","x":190,"y":215,"fontSize":11,"text":"1:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-user-role","x1":660,"y1":300,"x2":700,"y2":280,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-user-role","x":670,"y":285,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-user-company","x1":520,"y1":200,"x2":185,"y2":240,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-user-company","x":340,"y":210,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-user-settings","x1":520,"y1":440,"x2":520,"y2":440,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-user-settings","x":525,"y":425,"fontSize":11,"text":"1:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-location-parent","x1":1145,"y1":170,"x2":1145,"y2":210,"strokeColor":"#666","strokeWidth":2,"startArrowhead":"triangle","endArrowhead":"triangle"},
+    {"type":"text","id":"label-location-parent","x":1150,"y":185,"fontSize":11,"text":"1:N","strokeColor":"#666"},
+
+    {"type":"line","id":"line-wo-request","x1":1485,"y1":220,"x2":1485,"y2":260,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-wo-request","x":1490,"y":235,"fontSize":11,"text":"1:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-wo-pm","x1":1155,"y1":350,"x2":1330,"y2":180,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-wo-pm","x":1200,"y":250,"fontSize":11,"text":"1:N","strokeColor":"#666"},
+
+    {"type":"line","id":"line-asset-location","x1":1700,"y1":140,"x2":1280,"y2":140,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-asset-location","x":1480,"y":125,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-asset-category","x1":1990,"y1":100,"x2":2050,"y2":100,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-asset-category","x":2000,"y":85,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-asset-deprecation","x1":1990,"y1":180,"x2":2050,"y2":220,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-asset-deprecation","x":2000,"y":195,"fontSize":11,"text":"1:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-part-category","x1":1990,"y1":380,"x2":2050,"y2":380,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-part-category","x":2000,"y":365,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-meter-category","x1":1600,"y1":540,"x2":1650,"y2":560,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-meter-category","x":1610,"y":545,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-meter-reading","x1":1600,"y1":505,"x2":1650,"y2":505,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-meter-reading","x":1610,"y":490,"fontSize":11,"text":"1:N","strokeColor":"#666"},
+
+    {"type":"line","id":"line-meter-asset","x1":1460,"y1":580,"x2":1700,"y2":560,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-meter-asset","x":1570,"y":565,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-pm-schedule","x1":1010,"y1":410,"x2":970,"y2":430,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-pm-schedule","x":980,"y":415,"fontSize":11,"text":"1:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-wo-trigger-meter","x1":1330,"y1":505,"x2":1300,"y2":520,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-wo-trigger-meter","x":1310,"y":505,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-labor-wo","x1":495,"y1":590,"x2":1485,"y2":220,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-labor-wo","x":800,"y":450,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-labor-timecategory","x1":620,"y1":640,"x2":660,"y2":640,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-labor-timecategory","x":625,"y":625,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-cost-wo","x1":495,"y1":750,"x2":1485,"y2":220,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-cost-wo","x":750,"y":550,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-partconsumption-part","x1":660,"y1":895,"x2":1700,"y2":520,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-partconsumption-part","x":1000,"y":750,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-po-category","x1":1200,"y1":925,"x2":1240,"y2":925,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-po-category","x":1205,"y":910,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-po-vendor","x1":1200,"y1":970,"x2":2050,"y2":540,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-po-vendor","x":1500,"y":800,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-taskbase-task","x1":1045,"y1":710,"x2":1045,"y2":750,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-taskbase-task","x":1050,"y":725,"fontSize":11,"text":"1:N","strokeColor":"#666"},
+
+    {"type":"line","id":"line-taskbase-option","x1":1160,"y1":650,"x2":1200,"y2":650,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-taskbase-option","x":1165,"y":635,"fontSize":11,"text":"1:N","strokeColor":"#666"},
+
+    {"type":"line","id":"line-checklist-taskbase","x1":1200,"y1":765,"x2":1045,"y2":710,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-checklist-taskbase","x":1100,"y":730,"fontSize":11,"text":"1:N","strokeColor":"#666"},
+
+    {"type":"line","id":"line-workflow-action","x1":185,"y1":500,"x2":185,"y2":540,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-workflow-action","x":190,"y":515,"fontSize":11,"text":"1:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-customfield-value","x1":495,"y1":910,"x2":660,"y2":1000,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-customfield-value","x":520,"y":950,"fontSize":11,"text":"1:N","strokeColor":"#666"},
+
+    {"type":"line","id":"line-customer-currency","x1":1815,"y1":560,"x2":970,"y2":1080,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-customer-currency","x":1200,"y":850,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-floorplan-location","x1":1445,"y1":890,"x2":1145,"y2":170,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-floorplan-location","x":1280,"y":550,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-downtime-asset","x1":1705,"y1":940,"x2":1990,"y2":260,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-downtime-asset","x":1800,"y":650,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-relation-wo-parent","x1":1700,"y1":910,"x2":1640,"y2":220,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-relation-wo","x":1660,"y":600,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-history-wo","x1":1960,"y1":910,"x2":1640,"y2":220,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-history-wo","x":1780,"y":600,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-portal-field","x1":1840,"y1":1080,"x2":1870,"y2":1080,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-portal-field","x":1845,"y":1065,"fontSize":11,"text":"1:N","strokeColor":"#666"},
+
+    {"type":"line","id":"line-invitation-role","x1":1160,"y1":1070,"x2":970,"y2":340,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-invitation-role","x":1050,"y":750,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-verification-user","x1":485,"y1":1080,"x2":520,"y2":440,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-verification-user","x":500,"y":800,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-push-user","x1":175,"y1":940,"x2":520,"y2":440,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-push-user","x":300,"y":750,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-super-parent","x1":175,"y1":1060,"x2":520,"y2":440,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-super-parent","x":300,"y":800,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-apikey-user","x1":175,"y1":1180,"x2":520,"y2":440,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-apikey-user","x":300,"y":850,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-comment-wo","x1":1445,"y1":590,"x2":1485,"y2":220,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-comment-wo","x":1460,"y":450,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-notification-user","x1":1445,"y1":740,"x2":520,"y2":440,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-notification-user","x":950,"y":620,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-file-task","x1":2175,"y1":580,"x2":1045,"y2":710,"strokeColor":"#666","strokeWidth":2,"startArrowhead":null,"endArrowhead":"triangle"},
+    {"type":"text","id":"label-file-task","x":1600,"y":650,"fontSize":11,"text":"N:1","strokeColor":"#666"},
+
+    {"type":"line","id":"line-multiparts-part","x1":2050,"y1":810,"x2":1990,"y2":520,"strokeColor":"#666","strokeWidth":2,"startArrowhead":"triangle","endArrowhead":"triangle"},
+    {"type":"text","id":"label-multiparts-part","x":2010,"y":700,"fontSize":11,"text":"M:M","strokeColor":"#666"},
+
+    {"type":"line","id":"line-vendor-part","x1":2050,"y1":480,"x2":1990,"y2":520,"strokeColor":"#666","strokeWidth":2,"startArrowhead":"triangle","endArrowhead":"triangle"},
+    {"type":"text","id":"label-vendor-part","x":2020,"y":495,"fontSize":11,"text":"M:M","strokeColor":"#666"},
+
+    {"type":"line","id":"line-customer-part","x1":1700,"y1":600,"x2":1990,"y2":520,"strokeColor":"#666","strokeWidth":2,"startArrowhead":"triangle","endArrowhead":"triangle"},
+    {"type":"text","id":"label-customer-part","x":1830,"y":555,"fontSize":11,"text":"M:M","strokeColor":"#666"},
+
+    {"type":"line","id":"line-team-user","x1":1010,"y1":280,"x2":520,"y2":440,"strokeColor":"#666","strokeWidth":2,"startArrowhead":"triangle","endArrowhead":"triangle"},
+    {"type":"text","id":"label-team-user","x":750,"y":380,"fontSize":11,"text":"M:M","strokeColor":"#666"}
+  ]
+}
