@@ -72,8 +72,8 @@ export const cmmsModules: ModuleCardData[] = [
       'Monitor manufacturing process flow from material issue to final output.',
     icon: PrecisionManufacturingTwoToneIcon,
     color: '#059669',
-    path: '/app/home?module=manufacturing-execution',
-    status: 'coming-soon'
+    path: '/app/manufacturing-execution-log',
+    status: 'active'
   },
   {
     id: 'maintenance-service',

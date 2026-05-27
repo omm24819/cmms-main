@@ -151,6 +151,73 @@ const EditProduct = Loader(
 const ProductDetails = Loader(
   lazy(() => import('../content/own/CMMS/ProductLifecycle/ProductDetailsPage'))
 );
+const ManufacturingExecutionLog = Loader(
+  lazy(() => import('../content/own/CMMS/ManufacturingExecutionLog'))
+);
+const RawMaterialLogList = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/RawMaterialListPage'
+      )
+  )
+);
+const ComponentManufacturingLogList = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/ComponentListPage'
+      )
+  )
+);
+const AssemblyLineLogList = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/AssemblyLineListPage'
+      )
+  )
+);
+const LogisticsTrailLogList = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/LogisticsTrailListPage'
+      )
+  )
+);
+const RawMaterialLogEntry = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/RawMaterialEntryPage'
+      )
+  )
+);
+const ComponentManufacturingLogEntry = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/ComponentEntryPage'
+      )
+  )
+);
+const AssemblyLineLogEntry = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/AssemblyLineEntryPage'
+      )
+  )
+);
+const LogisticsTrailLogEntry = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/LogisticsTrailEntryPage'
+      )
+  )
+);
 
 const VendorsAndCustomers = Loader(
   lazy(() => import('../content/own/VendorsAndCustomers'))
@@ -209,6 +276,47 @@ const appRoutes = [
       {
         path: ':productId',
         element: <ProductDetails />
+      }
+    ]
+  },
+  {
+    path: 'manufacturing-execution-log',
+    children: [
+      {
+        path: '',
+        element: <ManufacturingExecutionLog />
+      },
+      {
+        path: 'raw-materials',
+        element: <RawMaterialLogList />
+      },
+      {
+        path: 'raw-materials/new',
+        element: <RawMaterialLogEntry />
+      },
+      {
+        path: 'components',
+        element: <ComponentManufacturingLogList />
+      },
+      {
+        path: 'components/new',
+        element: <ComponentManufacturingLogEntry />
+      },
+      {
+        path: 'assembly-line',
+        element: <AssemblyLineLogList />
+      },
+      {
+        path: 'assembly-line/new',
+        element: <AssemblyLineLogEntry />
+      },
+      {
+        path: 'logistics-trail',
+        element: <LogisticsTrailLogList />
+      },
+      {
+        path: 'logistics-trail/new',
+        element: <LogisticsTrailLogEntry />
       }
     ]
   },

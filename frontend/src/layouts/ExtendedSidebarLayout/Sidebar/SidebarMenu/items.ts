@@ -50,7 +50,7 @@ const ownMenuItems: MenuItems[] = [
       },
       {
         name: 'Manufacturing Execution Log',
-        link: '/app/home?module=manufacturing-execution',
+        link: '/app/manufacturing-execution-log',
         icon: PrecisionManufacturingTwoToneIcon
       },
       {
