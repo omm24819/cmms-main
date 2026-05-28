@@ -7,8 +7,8 @@ import {
 import { useSelector } from '../store';
 import { useLicenseEntitlement } from './useLicenseEntitlement';
 
-const DEFAULT_WHITE_LOGO = '/static/images/logo/logo-white.png';
-const DEFAULT_DARK_LOGO = '/static/images/logo/logo.png';
+const DEFAULT_WHITE_LOGO = '/static/images/logo/logo-white-new.png';
+const DEFAULT_DARK_LOGO = '/static/images/logo/white.png';
 const CUSTOM_DARK_LOGO = `${apiUrl}images/custom-logo.png`;
 const CUSTOM_WHITE_LOGO = `${apiUrl}images/custom-logo-white.png`;
 

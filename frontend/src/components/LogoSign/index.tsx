@@ -8,27 +8,28 @@ import {
   useTheme
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { customLogoPaths, homeUrl } from '../../config';
-import { useEffect, useState } from 'react';
 import { useBrand } from '../../hooks/useBrand';
 import { getLocalizedHomeUrl } from '../../utils/urlPaths';
 
 const LogoWrapper = styled('a')(
   ({ theme }) => `
-        color: ${theme.palette.text.primary};
-        display: flex;
-        text-decoration: none;
-        align-items: center;
-        width: 53px;
-        margin: 0 auto;
-        font-weight: ${theme.typography.fontWeightBold};
+    color: ${theme.palette.text.primary};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    width: 100%;
+    margin: 0 auto;
+    font-weight: ${theme.typography.fontWeightBold};
 `
 );
 
 const LogoSignWrapper = styled(Box)(
   () => `
-        width: 52px;
-        height: 52px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 );
 
@@ -48,16 +49,20 @@ const TooltipWrapper = styled(({ className, ...props }: TooltipProps) => (
     color: theme.colors.alpha.trueWhite[100]
   }
 }));
+
 interface OwnProps {
   white?: boolean;
 }
 
 function Logo({ white }: OwnProps) {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const theme = useTheme();
-  const width = 75;
+
+  const width = 125;
   const height = 75;
+
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { logo, name: brandName } = useBrand();
 
   return (
@@ -68,7 +73,12 @@ function Logo({ white }: OwnProps) {
             src={white ? logo.white : logo.dark}
             width={`${width * (mobile ? 0.7 : 1)}px`}
             height={`${height * (mobile ? 0.7 : 1)}px`}
-            alt={'logo'}
+            alt="logo"
+            style={{
+              display: 'block',
+              margin: '0 auto',
+              objectFit: 'contain'
+            }}
           />
         </LogoSignWrapper>
       </LogoWrapper>
