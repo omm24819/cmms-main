@@ -94,6 +94,9 @@ function LogListPage({
     );
   };
 
+  const getDetailPath = (row: string[]) =>
+    `${section.listPath}/${encodeURIComponent(row[0])}`;
+
   return (
     <>
       <Helmet>
@@ -203,6 +206,10 @@ function LogListPage({
                         <TableRow
                           hover
                           key={row.join('-')}
+                          onClick={() =>
+                            navigate(getDetailPath(row))
+                          }
+                          sx={{ cursor: 'pointer' }}
                         >
                           {row.map((cell, index) => (
                             <TableCell
@@ -242,7 +249,10 @@ function LogListPage({
                               startIcon={
                                 <EditTwoToneIcon />
                               }
-                              onClick={handleEdit}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleEdit();
+                              }}
                             >
                               Edit
                             </Button>
@@ -252,7 +262,10 @@ function LogListPage({
                               startIcon={
                                 <DeleteTwoToneIcon />
                               }
-                              onClick={handleDelete}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleDelete();
+                              }}
                             >
                               Delete
                             </Button>

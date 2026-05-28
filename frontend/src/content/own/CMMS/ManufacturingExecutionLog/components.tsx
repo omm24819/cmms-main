@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react';
 
 import {
-  Avatar,
+  alpha,
   Box,
   Button,
   Card,
   CardContent,
   Chip,
-  Divider,
   Grid,
+  IconButton,
   InputAdornment,
   Link,
   MenuItem,
@@ -22,27 +22,29 @@ import {
   TableRow,
   TextField,
   Typography,
-  alpha,
   useTheme
 } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
-import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone';
 import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
-import RestartAltTwoToneIcon from '@mui/icons-material/RestartAltTwoTone';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import ImageTwoToneIcon from '@mui/icons-material/ImageTwoTone';
+import InsertDriveFileTwoToneIcon from '@mui/icons-material/InsertDriveFileTwoTone';
 import SaveTwoToneIcon from '@mui/icons-material/SaveTwoTone';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import SendTwoToneIcon from '@mui/icons-material/SendTwoTone';
+
+import { useDropzone } from 'react-dropzone';
 
 import {
   Link as RouterLink
 } from 'react-router-dom';
 
 import type {
+  AttachmentItem,
   EntrySection,
-  ManufacturingLogSection,
-  PreviewDetail
+  ManufacturingLogSection
 } from './types';
 
 export function ManufacturingTopBar({
@@ -106,56 +108,6 @@ export function ManufacturingTopBar({
           }}
           sx={{ minWidth: 220 }}
         />
-
-        <TextField
-          size="small"
-          type="date"
-          defaultValue="2025-05-31"
-          inputProps={{
-            'aria-label': 'Date range end'
-          }}
-          helperText="01 May 2025 - 31 May 2025"
-          sx={{
-            width: 220,
-            '& .MuiFormHelperText-root': {
-              mx: 0,
-              mt: 0.5,
-              whiteSpace: 'nowrap'
-            }
-          }}
-        />
-
-        <Stack
-          direction="row"
-          spacing={1}
-          alignItems="center"
-          sx={{
-            minWidth: 150,
-            justifyContent: {
-              xs: 'flex-start',
-              sm: 'flex-end'
-            }
-          }}
-        >
-          <Avatar
-            src="/static/images/avatars/1.jpg"
-            sx={{
-              width: 38,
-              height: 38
-            }}
-          />
-          <Box>
-            <Typography variant="subtitle2">
-              Max smith
-            </Typography>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-            >
-              Admin
-            </Typography>
-          </Box>
-        </Stack>
       </Stack>
     </Stack>
   );
@@ -467,14 +419,10 @@ export function FormSectionBlock({
 export function EntryActionButtons({
   onDraft,
   onSubmit,
-  onReset,
-  onCancel,
   compact = false
 }: {
   onDraft: () => void;
   onSubmit: () => void;
-  onReset?: () => void;
-  onCancel?: () => void;
   compact?: boolean;
 }) {
   return (
@@ -484,28 +432,6 @@ export function EntryActionButtons({
       justifyContent="flex-end"
       flexWrap="wrap"
     >
-      {onReset && (
-        <Button
-          variant="outlined"
-          color="inherit"
-          size={compact ? 'small' : 'medium'}
-          startIcon={<RestartAltTwoToneIcon />}
-          onClick={onReset}
-        >
-          Reset
-        </Button>
-      )}
-
-      {onCancel && (
-        <Button
-          color="inherit"
-          size={compact ? 'small' : 'medium'}
-          onClick={onCancel}
-        >
-          Cancel
-        </Button>
-      )}
-
       <Button
         variant="outlined"
         size={compact ? 'small' : 'medium'}
@@ -527,127 +453,219 @@ export function EntryActionButtons({
   );
 }
 
-export function RightSidebarPanels({
-  title,
-  image,
-  previewDetails,
-  summaryTitle,
-  summaryDetails,
-  checklistTitle,
-  checklist,
-  attachments
+export function EntryUploadSidebar({
+  documentFiles,
+  productImageFiles,
+  onDocumentFilesAdded,
+  onProductImageFilesAdded,
+  onDocumentFileRemove,
+  onProductImageFileRemove,
+  showProductImageUpload
 }: {
-  title: string;
-  image: string;
-  previewDetails: PreviewDetail[];
-  summaryTitle: string;
-  summaryDetails: PreviewDetail[];
-  checklistTitle: string;
-  checklist: string[];
-  attachments?: {
-    name: string;
-    size: string;
-  }[];
+  documentFiles: AttachmentItem[];
+  productImageFiles: AttachmentItem[];
+  onDocumentFilesAdded: (files: File[]) => void;
+  onProductImageFilesAdded: (files: File[]) => void;
+  onDocumentFileRemove: (id: string) => void;
+  onProductImageFileRemove: (id: string) => void;
+  showProductImageUpload?: boolean;
 }) {
   return (
     <Stack spacing={2}>
-      <SidePanel title={title}>
-        <Box
-          component="img"
-          src={image}
-          alt={title}
-          sx={{
-            width: '100%',
-            height: 138,
-            objectFit: 'cover',
-            borderRadius: 1,
-            mb: 1.5,
-            bgcolor: 'background.default'
+      <UploadPanel
+        title="Document Upload"
+        description="Upload supporting documents"
+        helperText="PDF, JPG, PNG, DOCX"
+        files={documentFiles}
+        onFilesAdded={onDocumentFilesAdded}
+        onFileRemove={onDocumentFileRemove}
+      />
+
+      {showProductImageUpload && (
+        <UploadPanel
+          title="Product Image Upload"
+          description="Upload product or item image"
+          helperText="JPG or PNG"
+          files={productImageFiles}
+          icon="image"
+          multiple={false}
+          accept={{
+            'image/*': ['.jpg', '.jpeg', '.png']
           }}
+          onFilesAdded={onProductImageFilesAdded}
+          onFileRemove={onProductImageFileRemove}
         />
-
-        <DetailList details={previewDetails} />
-      </SidePanel>
-
-      {attachments && attachments.length > 0 && (
-        <SidePanel title="Attachments">
-          <Paper
-            variant="outlined"
-            sx={{
-              borderStyle: 'dashed',
-              py: 3,
-              px: 2,
-              textAlign: 'center',
-              mb: 1.5
-            }}
-          >
-            <CloudUploadTwoToneIcon color="primary" />
-            <Typography variant="body2">
-              Drag and drop files here
-            </Typography>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-            >
-              or browse files
-            </Typography>
-          </Paper>
-
-          <Stack spacing={1}>
-            {attachments.map((attachment) => (
-              <Stack
-                key={attachment.name}
-                direction="row"
-                justifyContent="space-between"
-                spacing={2}
-              >
-                <Typography
-                  variant="body2"
-                  noWrap
-                >
-                  {attachment.name}
-                </Typography>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                >
-                  {attachment.size}
-                </Typography>
-              </Stack>
-            ))}
-          </Stack>
-        </SidePanel>
       )}
+    </Stack>
+  );
+}
 
-      <SidePanel title={summaryTitle}>
-        <DetailList details={summaryDetails} />
-      </SidePanel>
+function UploadPanel({
+  title,
+  description,
+  helperText,
+  files,
+  onFilesAdded,
+  onFileRemove,
+  multiple = true,
+  accept,
+  icon = 'document'
+}: {
+  title: string;
+  description: string;
+  helperText: string;
+  files: AttachmentItem[];
+  onFilesAdded: (files: File[]) => void;
+  onFileRemove: (id: string) => void;
+  multiple?: boolean;
+  accept?: Record<string, string[]>;
+  icon?: 'document' | 'image';
+}) {
+  const theme = useTheme();
 
-      <SidePanel title={checklistTitle}>
-        <Stack spacing={1.2}>
-          {checklist.map((item) => (
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive
+  } = useDropzone({
+    multiple,
+    accept,
+    onDrop: (acceptedFiles) => {
+      // TODO(API): Upload accepted files to the backend document endpoint here.
+      onFilesAdded(acceptedFiles);
+    }
+  });
+
+  return (
+    <SidePanel title={title}>
+      <Paper
+        variant="outlined"
+        {...getRootProps()}
+        sx={{
+          borderStyle: 'dashed',
+          py: 4,
+          px: 2,
+          textAlign: 'center',
+          cursor: 'pointer',
+          bgcolor: isDragActive
+            ? alpha(
+                theme.palette.primary.main,
+                0.08
+              )
+            : 'background.default',
+          borderColor: isDragActive
+            ? 'primary.main'
+            : 'divider'
+        }}
+      >
+        <input {...getInputProps()} />
+        <CloudUploadTwoToneIcon color="primary" />
+        <Typography variant="body2">
+          {isDragActive
+            ? 'Drop files to attach'
+            : description}
+        </Typography>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+        >
+          Drag and drop files here or browse files
+        </Typography>
+        <Typography
+          display="block"
+          variant="caption"
+          color="text.secondary"
+          sx={{ mt: 0.5 }}
+        >
+          {helperText}
+        </Typography>
+      </Paper>
+
+      <Stack
+        spacing={1}
+        sx={{ mt: 1.5 }}
+      >
+        <Typography
+          variant="subtitle2"
+          color="text.secondary"
+        >
+          Attachment List
+        </Typography>
+
+        {files.length > 0 ? (
+          files.map((file) => (
             <Stack
-              key={item}
+              key={file.id || file.name}
               direction="row"
+              spacing={1}
               alignItems="center"
               justifyContent="space-between"
-              spacing={1}
+              sx={{
+                p: 1,
+                borderRadius: 1,
+                border: `1px solid ${theme.palette.divider}`,
+                bgcolor: 'background.default'
+              }}
             >
-              <Typography
-                variant="body2"
-                noWrap
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                minWidth={0}
               >
-                {item}
-              </Typography>
-              <CheckCircleTwoToneIcon
-                color="success"
-                fontSize="small"
-              />
+                {icon === 'image' ? (
+                  <ImageTwoToneIcon
+                    color="primary"
+                    fontSize="small"
+                  />
+                ) : (
+                  <InsertDriveFileTwoToneIcon
+                    color="primary"
+                    fontSize="small"
+                  />
+                )}
+
+                <Box minWidth={0}>
+                  <Typography
+                    variant="body2"
+                    noWrap
+                  >
+                    {file.name}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    {file.size}
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <IconButton
+                size="small"
+                color="error"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  // TODO(API): Delete the attachment from backend storage before removing it locally.
+                  onFileRemove(
+                    file.id || file.name
+                  );
+                }}
+              >
+                <DeleteTwoToneIcon fontSize="small" />
+              </IconButton>
             </Stack>
-          ))}
-        </Stack>
-      </SidePanel>
-    </Stack>
+          ))
+        ) : (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+          >
+            No files attached yet
+          </Typography>
+        )}
+      </Stack>
+    </SidePanel>
   );
 }
 
@@ -678,40 +696,5 @@ function SidePanel({
         {children}
       </CardContent>
     </Card>
-  );
-}
-
-function DetailList({
-  details
-}: {
-  details: PreviewDetail[];
-}) {
-  return (
-    <Stack
-      divider={<Divider flexItem />}
-      spacing={1}
-    >
-      {details.map((detail) => (
-        <Stack
-          key={detail.label}
-          direction="row"
-          justifyContent="space-between"
-          spacing={2}
-        >
-          <Typography
-            variant="caption"
-            color="text.secondary"
-          >
-            {detail.label}
-          </Typography>
-          <Typography
-            variant="subtitle2"
-            textAlign="right"
-          >
-            {detail.value}
-          </Typography>
-        </Stack>
-      ))}
-    </Stack>
   );
 }

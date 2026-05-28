@@ -8,7 +8,6 @@ import {
 import { Helmet } from 'react-helmet-async';
 
 import {
-  Avatar,
   Box,
   Breadcrumbs,
   Button,
@@ -20,20 +19,20 @@ import {
 import QrCodeScannerTwoToneIcon from '@mui/icons-material/QrCodeScannerTwoTone';
 
 import {
-  Link as RouterLink,
-  useNavigate
+  Link as RouterLink
 } from 'react-router-dom';
 
 import { TitleContext } from 'src/contexts/TitleContext';
 
 import {
+  EntryUploadSidebar,
   EntryActionButtons,
-  FormSectionBlock,
-  RightSidebarPanels
+  FormSectionBlock
 } from './components';
 
 import { manufacturingEntryConfigs } from './mockData';
 import type {
+  AttachmentItem,
   ManufacturingEntryConfig,
   ManufacturingLogType
 } from './types';
@@ -52,12 +51,48 @@ function createInitialValues(
   }, {});
 }
 
+function createMockAttachments(
+  config: ManufacturingEntryConfig
+): AttachmentItem[] {
+  return (config.attachments || []).map(
+    (attachment, index) => ({
+      ...attachment,
+      id:
+        attachment.id ||
+        `${config.type}-mock-document-${index}`
+    })
+  );
+}
+
+function fileToAttachment(
+  file: File,
+  prefix: string
+): AttachmentItem {
+  return {
+    id: `${prefix}-${file.name}-${file.lastModified}`,
+    name: file.name,
+    size: formatFileSize(file.size),
+    type: file.type || 'Unknown'
+  };
+}
+
+function formatFileSize(size: number) {
+  if (size < 1024) {
+    return `${size} B`;
+  }
+
+  if (size < 1024 * 1024) {
+    return `${(size / 1024).toFixed(1)} KB`;
+  }
+
+  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 function EntryPage({
   type
 }: {
   type: ManufacturingLogType;
 }) {
-  const navigate = useNavigate();
   const { setTitle } =
     useContext(TitleContext);
 
@@ -74,9 +109,28 @@ function EntryPage({
       initialValues
     );
 
+  const [documentFiles, setDocumentFiles] =
+    useState<AttachmentItem[]>(() =>
+      createMockAttachments(config)
+    );
+
+  const [
+    productImageFiles,
+    setProductImageFiles
+  ] = useState<AttachmentItem[]>([]);
+
   useEffect(() => {
     setTitle(config.title);
   }, [config.title, setTitle]);
+
+  useEffect(() => {
+    setValues(initialValues);
+    // TODO(API): Replace mock attachment initialization with GET /api/manufacturing-execution-log/:type/:id/attachments.
+    setDocumentFiles(
+      createMockAttachments(config)
+    );
+    setProductImageFiles([]);
+  }, [config, initialValues]);
 
   const handleFieldChange = (
     name: string,
@@ -90,10 +144,13 @@ function EntryPage({
 
   const handleDraft = () => {
     // TODO(API): Persist draft with POST /api/manufacturing-execution-log/:type/drafts.
+    // TODO(API): Include documentFiles and productImageFiles in multipart upload once the backend accepts attachments.
     console.log(
       'Manufacturing draft payload',
       type,
-      values
+      values,
+      documentFiles,
+      productImageFiles
     );
     window.alert(
       'Draft saved locally. Backend API wiring is marked in the code.'
@@ -103,20 +160,65 @@ function EntryPage({
   const handleSubmit = () => {
     // TODO(API): Create entry with POST /api/manufacturing-execution-log/:type.
     // TODO(API): For edit mode later, update existing entries with PUT/PATCH /api/manufacturing-execution-log/:type/:id.
+    // TODO(API): Upload documentFiles and productImageFiles to the backend attachment service.
     // TODO(API): Validate required fields with backend rules before final submission.
     console.log(
       'Manufacturing submit payload',
       type,
-      values
+      values,
+      documentFiles,
+      productImageFiles
     );
     window.alert(
       'Entry submitted locally. Backend API wiring is marked in the code.'
     );
   };
 
-  const handleReset = () => {
-    setValues(initialValues);
-    // TODO(API): If editing an existing record later, reset from the latest GET response.
+  const handleDocumentFilesAdded = (
+    files: File[]
+  ) => {
+    setDocumentFiles((previousFiles) => [
+      ...previousFiles,
+      ...files.map((file) =>
+        fileToAttachment(file, 'document')
+      )
+    ]);
+  };
+
+  const handleProductImageFilesAdded = (
+    files: File[]
+  ) => {
+    setProductImageFiles(
+      files
+        .slice(0, 1)
+        .map((file) =>
+          fileToAttachment(file, 'product-image')
+        )
+    );
+  };
+
+  const handleDocumentFileRemove = (
+    fileId: string
+  ) => {
+    // TODO(API): Call DELETE /api/manufacturing-execution-log/:type/attachments/:fileId when backend storage exists.
+    setDocumentFiles((previousFiles) =>
+      previousFiles.filter(
+        (file) =>
+          (file.id || file.name) !== fileId
+      )
+    );
+  };
+
+  const handleProductImageFileRemove = (
+    fileId: string
+  ) => {
+    // TODO(API): Call DELETE /api/manufacturing-execution-log/:type/product-image/:fileId when backend storage exists.
+    setProductImageFiles((previousFiles) =>
+      previousFiles.filter(
+        (file) =>
+          (file.id || file.name) !== fileId
+      )
+    );
   };
 
   return (
@@ -206,35 +308,6 @@ function EntryPage({
                   onDraft={handleDraft}
                   onSubmit={handleSubmit}
                 />
-
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  alignItems="center"
-                  sx={{
-                    minWidth: 140,
-                    justifyContent: 'flex-end'
-                  }}
-                >
-                  <Avatar
-                    src="/static/images/avatars/2.jpg"
-                    sx={{
-                      width: 34,
-                      height: 34
-                    }}
-                  />
-                  <Box>
-                    <Typography variant="subtitle2">
-                      John Smith
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                    >
-                      {config.role}
-                    </Typography>
-                  </Box>
-                </Stack>
               </Stack>
             </Stack>
           </Stack>
@@ -271,10 +344,6 @@ function EntryPage({
               <EntryActionButtons
                 onDraft={handleDraft}
                 onSubmit={handleSubmit}
-                onReset={handleReset}
-                onCancel={() =>
-                  navigate(config.listPath)
-                }
               />
             </Stack>
 
@@ -287,22 +356,25 @@ function EntryPage({
                 flexShrink: 0
               }}
             >
-              <RightSidebarPanels
-                title={config.previewTitle}
-                image={config.previewImage}
-                previewDetails={
-                  config.previewDetails
+              <EntryUploadSidebar
+                documentFiles={documentFiles}
+                productImageFiles={
+                  productImageFiles
                 }
-                summaryTitle={config.summaryTitle}
-                summaryDetails={
-                  config.summaryDetails
+                onDocumentFilesAdded={
+                  handleDocumentFilesAdded
                 }
-                checklistTitle={
-                  config.checklistTitle
+                onProductImageFilesAdded={
+                  handleProductImageFilesAdded
                 }
-                checklist={config.checklist}
-                attachments={
-                  config.attachments
+                onDocumentFileRemove={
+                  handleDocumentFileRemove
+                }
+                onProductImageFileRemove={
+                  handleProductImageFileRemove
+                }
+                showProductImageUpload={
+                  config.type !== 'raw-materials'
                 }
               />
             </Box>

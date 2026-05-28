@@ -40,8 +40,10 @@ export interface PreviewDetail {
 }
 
 export interface AttachmentItem {
+  id?: string;
   name: string;
   size: string;
+  type?: string;
 }
 
 export interface ManufacturingEntryConfig {

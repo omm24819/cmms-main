@@ -194,11 +194,27 @@ const RawMaterialLogEntry = Loader(
       )
   )
 );
+const RawMaterialLogDetail = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/RawMaterialDetailPage'
+      )
+  )
+);
 const ComponentManufacturingLogEntry = Loader(
   lazy(
     () =>
       import(
         '../content/own/CMMS/ManufacturingExecutionLog/ComponentEntryPage'
+      )
+  )
+);
+const ComponentManufacturingLogDetail = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/ComponentDetailPage'
       )
   )
 );
@@ -210,11 +226,27 @@ const AssemblyLineLogEntry = Loader(
       )
   )
 );
+const AssemblyLineLogDetail = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/AssemblyLineDetailPage'
+      )
+  )
+);
 const LogisticsTrailLogEntry = Loader(
   lazy(
     () =>
       import(
         '../content/own/CMMS/ManufacturingExecutionLog/LogisticsTrailEntryPage'
+      )
+  )
+);
+const LogisticsTrailLogDetail = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/LogisticsTrailDetailPage'
       )
   )
 );
@@ -295,12 +327,20 @@ const appRoutes = [
         element: <RawMaterialLogEntry />
       },
       {
+        path: 'raw-materials/:logId',
+        element: <RawMaterialLogDetail />
+      },
+      {
         path: 'components',
         element: <ComponentManufacturingLogList />
       },
       {
         path: 'components/new',
         element: <ComponentManufacturingLogEntry />
+      },
+      {
+        path: 'components/:logId',
+        element: <ComponentManufacturingLogDetail />
       },
       {
         path: 'assembly-line',
@@ -311,12 +351,20 @@ const appRoutes = [
         element: <AssemblyLineLogEntry />
       },
       {
+        path: 'assembly-line/:logId',
+        element: <AssemblyLineLogDetail />
+      },
+      {
         path: 'logistics-trail',
         element: <LogisticsTrailLogList />
       },
       {
         path: 'logistics-trail/new',
         element: <LogisticsTrailLogEntry />
+      },
+      {
+        path: 'logistics-trail/:logId',
+        element: <LogisticsTrailLogDetail />
       }
     ]
   },
