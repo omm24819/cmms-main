@@ -10,13 +10,10 @@ import { Helmet } from 'react-helmet-async';
 import {
   Box,
   Breadcrumbs,
-  Button,
   Link,
   Stack,
   Typography
 } from '@mui/material';
-
-import QrCodeScannerTwoToneIcon from '@mui/icons-material/QrCodeScannerTwoTone';
 
 import {
   Link as RouterLink
@@ -44,11 +41,39 @@ function createInitialValues(
     Record<string, string>
   >((accumulator, section) => {
     section.fields.forEach((field) => {
-      accumulator[field.name] = field.value;
+      accumulator[field.name] =
+        field.autoGenerate
+          ? generateLogId(config.type)
+          : field.value;
     });
 
     return accumulator;
   }, {});
+}
+
+function generateLogId(
+  type: ManufacturingLogType
+) {
+  const prefixes:
+    Record<ManufacturingLogType, string> = {
+    'raw-materials': 'RMP',
+    components: 'CMP',
+    'assembly-line': 'ASM',
+    'logistics-trail': 'LGT'
+  };
+
+  const now = new Date();
+  const datePart = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, '0'),
+    String(now.getDate()).padStart(2, '0')
+  ].join('');
+  const randomPart = Math.floor(
+    1000 + Math.random() * 9000
+  );
+
+  // TODO(API): Replace this temporary frontend ID with a backend-generated sequence.
+  return `${prefixes[type]}-${datePart}-${randomPart}`;
 }
 
 function createMockAttachments(
@@ -294,15 +319,6 @@ function EntryPage({
                   sm: 'center'
                 }}
               >
-                <Button
-                  variant="outlined"
-                  startIcon={
-                    <QrCodeScannerTwoToneIcon />
-                  }
-                >
-                  Scan QR / Barcode
-                </Button>
-
                 <EntryActionButtons
                   compact
                   onDraft={handleDraft}

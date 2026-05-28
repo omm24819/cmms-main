@@ -393,6 +393,10 @@ export function FormSectionBlock({
                 multiline={field.multiline}
                 rows={field.rows}
                 helperText={field.helperText}
+                disabled={field.readOnly}
+                InputProps={{
+                  readOnly: field.readOnly
+                }}
                 InputLabelProps={
                   field.type === 'date'
                     ? { shrink: true }

@@ -23,6 +23,8 @@ export interface EntryField {
   value: string;
   type?: string;
   options?: string[];
+  readOnly?: boolean;
+  autoGenerate?: boolean;
   multiline?: boolean;
   rows?: number;
   helperText?: string;
