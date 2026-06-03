@@ -204,9 +204,9 @@
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/cmms
-    username: postgres
-    password: Ommishra1449@
+    url: jdbc:postgresql://localhost:5432/mydb
+    username: myuser
+    password: mypassword
     driver-class-name: org.postgresql.Driver
     hikari:
       leak-detection-threshold: 60000
@@ -404,3 +404,8 @@ springdoc:
     version: openapi_3_1
   swagger-ui:
     tags-sorter: alpha
+
+fleetbase:
+  api:
+    url: https://api.fleetbase.io/v1
+    key: YOUR_FLEETBASE_API_KEY

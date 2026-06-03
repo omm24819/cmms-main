@@ -79,6 +79,10 @@ public class Product {
 
     private String imageUrl;
 
+    private LocalDate warrantyStartDate;
+
+    private LocalDate warrantyEndDate;
+
     @OneToMany(mappedBy = "product",
             cascade = CascadeType.ALL,
             orphanRemoval = true)

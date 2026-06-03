@@ -90,6 +90,10 @@ public class WebSecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/products/**").authenticated()
                         .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/api/vehicles/**").permitAll()
+                        .requestMatchers("/api/drivers/**").permitAll()
+                        .requestMatchers("/api/shipments/**").permitAll()
+                        .requestMatchers("/api/tracking/**").permitAll()
                         // Disallow everything else..
                         .anyRequest().authenticated()
         );

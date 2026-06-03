@@ -22,6 +22,11 @@ public class ProductResponseDto {
     private String manufacturingBatchId;
     private String manufacturingDate;
     private String assemblyDate;
+
+    // NEW FIELDS
+    private String warrantyStartDate;
+    private String warrantyEndDate;
+
     private String qcStatus;
     private String productStatus;
     private String lifecycleStage;

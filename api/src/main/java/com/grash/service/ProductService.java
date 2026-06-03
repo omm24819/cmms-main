@@ -45,9 +45,13 @@ public class ProductService {
             );
         }
 
-        if (productRepository.existsByProductSerialNumber(
-                dto.getProductSerialNumber()
-        )) {
+        if (
+                dto.getProductSerialNumber() != null
+                        &&
+                        productRepository.existsByProductSerialNumber(
+                                dto.getProductSerialNumber()
+                        )
+        ) {
             throw new DuplicateResourceException(
                     "Product Serial Number already exists"
             );
@@ -63,6 +67,9 @@ public class ProductService {
 
         String imageUrl = null;
 
+        /**
+         * SAVE IMAGE
+         */
         if (image != null && !image.isEmpty()) {
 
             String imageName =
@@ -81,53 +88,108 @@ public class ProductService {
                     StandardCopyOption.REPLACE_EXISTING
             );
 
-            // IMPORTANT
             imageUrl =
                     "/uploads/product-images/" + imageName;
         }
 
+        /**
+         * BUILD PRODUCT
+         */
         Product product = Product.builder()
+
                 .productUid(dto.getProductUid())
+
                 .productName(dto.getProductName())
+
                 .productCategory(dto.getProductCategory())
+
                 .productSerialNumber(dto.getProductSerialNumber())
+
                 .productVersion(dto.getProductVersion())
+
                 .bomVersion(dto.getBomVersion())
+
                 .manufacturingBatchId(dto.getManufacturingBatchId())
+
                 .manufacturingDate(
                         dto.getManufacturingDate() != null
                                 ? LocalDate.parse(
-                                dto.getManufacturingDate())
+                                dto.getManufacturingDate()
+                        )
                                 : null
                 )
+
                 .assemblyDate(
                         dto.getAssemblyDate() != null
                                 ? LocalDate.parse(
-                                dto.getAssemblyDate())
+                                dto.getAssemblyDate()
+                        )
                                 : null
                 )
+
+                // WARRANTY START DATE
+                .warrantyStartDate(
+                        dto.getWarrantyStartDate() != null
+                                ? LocalDate.parse(
+                                dto.getWarrantyStartDate()
+                        )
+                                : null
+                )
+
+                // WARRANTY END DATE
+                .warrantyEndDate(
+                        dto.getWarrantyEndDate() != null
+                                ? LocalDate.parse(
+                                dto.getWarrantyEndDate()
+                        )
+                                : null
+                )
+
                 .qcStatus(dto.getQcStatus())
+
                 .productStatus(dto.getProductStatus())
+
                 .lifecycleStage(dto.getLifecycleStage())
+
                 .modelNumber(dto.getModelNumber())
+
                 .partNumber(dto.getPartNumber())
+
                 .macAddress(dto.getMacAddress())
+
                 .imeiModuleId(dto.getImeiModuleId())
+
                 .hardwareVersion(dto.getHardwareVersion())
+
                 .firmwareVersion(dto.getFirmwareVersion())
+
                 .rfidTagId(dto.getRfidTagId())
+
                 .digitalTwinLink(dto.getDigitalTwinLink())
+
                 .remarks(dto.getRemarks())
+
                 .assignedCustomer(dto.getAssignedCustomer())
+
                 .installationSite(dto.getInstallationSite())
+
                 .locationGps(dto.getLocationGps())
+
                 .contactPerson(dto.getContactPerson())
+
                 .contactNumber(dto.getContactNumber())
+
                 .email(dto.getEmail())
+
                 .imageUrl(imageUrl)
+
                 .createdAt(LocalDateTime.now())
+
                 .build();
 
+        /**
+         * SAVE ATTACHMENTS
+         */
         if (attachments != null) {
 
             List<ProductAttachment> attachmentList =
@@ -158,7 +220,10 @@ public class ProductService {
                 ProductAttachment attachment =
                         ProductAttachment.builder()
                                 .fileName(file.getOriginalFilename())
-                                .fileUrl("/uploads/product-attachments/" + fileName)
+                                .fileUrl(
+                                        "/uploads/product-attachments/"
+                                                + fileName
+                                )
                                 .product(product)
                                 .build();
 
@@ -209,7 +274,9 @@ public class ProductService {
                                         "Product not found"
                                 ));
 
-        // DELETE IMAGE
+        /**
+         * DELETE IMAGE
+         */
         if (product.getImageUrl() != null) {
 
             String imagePath =
@@ -221,11 +288,15 @@ public class ProductService {
             );
         }
 
-        // DELETE ATTACHMENTS
+        /**
+         * DELETE ATTACHMENTS
+         */
         if (product.getAttachments() != null) {
 
-            for (ProductAttachment attachment
-                    : product.getAttachments()) {
+            for (
+                    ProductAttachment attachment
+                    : product.getAttachments()
+            ) {
 
                 if (attachment.getFileUrl() != null) {
 
@@ -243,7 +314,6 @@ public class ProductService {
             }
         }
 
-        // DELETE PRODUCT
         productRepository.delete(product);
     }
 
@@ -293,7 +363,6 @@ public class ProductService {
                         !image.isEmpty()
         ) {
 
-            // DELETE OLD IMAGE
             if (product.getImageUrl() != null) {
 
                 String oldImagePath =
@@ -339,7 +408,6 @@ public class ProductService {
                         attachments.length > 0
         ) {
 
-            // DELETE OLD ATTACHMENTS
             if (product.getAttachments() != null) {
 
                 for (
@@ -458,6 +526,24 @@ public class ProductService {
                         : null
         );
 
+        // WARRANTY START DATE
+        product.setWarrantyStartDate(
+                dto.getWarrantyStartDate() != null
+                        ? LocalDate.parse(
+                        dto.getWarrantyStartDate()
+                )
+                        : null
+        );
+
+        // WARRANTY END DATE
+        product.setWarrantyEndDate(
+                dto.getWarrantyEndDate() != null
+                        ? LocalDate.parse(
+                        dto.getWarrantyEndDate()
+                )
+                        : null
+        );
+
         product.setQcStatus(
                 dto.getQcStatus()
         );
@@ -572,6 +658,20 @@ public class ProductService {
                                 : null
                 )
 
+                // WARRANTY START DATE
+                .warrantyStartDate(
+                        product.getWarrantyStartDate() != null
+                                ? product.getWarrantyStartDate().toString()
+                                : null
+                )
+
+                // WARRANTY END DATE
+                .warrantyEndDate(
+                        product.getWarrantyEndDate() != null
+                                ? product.getWarrantyEndDate().toString()
+                                : null
+                )
+
                 .qcStatus(product.getQcStatus())
 
                 .productStatus(product.getProductStatus())
@@ -635,5 +735,4 @@ public class ProductService {
 
                 .build();
     }
-
 }
