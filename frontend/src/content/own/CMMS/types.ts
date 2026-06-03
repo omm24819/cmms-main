@@ -104,3 +104,65 @@ export interface ProductRecord {
   auditTrail: ProductEvent[];
   digitalTwinMetrics: ProductMetric[];
 }
+
+// src/content/own/CMMS/ManufacturingExecutionLog/types.ts
+
+export interface AttachmentItem {
+
+  id?: string;
+
+  name: string;
+
+  size: string;
+
+  file?: File;
+}
+
+export interface ManufacturingLogSection {
+
+  number: string;
+
+  title: string;
+
+  type: string;
+
+  addLabel: string;
+
+  newPath: string;
+
+  listPath: string;
+
+  fullLogLabel: string;
+
+  columns: string[];
+
+  rows: string[][];
+}
+
+export interface EntryField {
+
+  name: string;
+
+  label: string;
+
+  type?: string;
+
+  width?: number;
+
+  helperText?: string;
+
+  multiline?: boolean;
+
+  rows?: number;
+
+  readOnly?: boolean;
+
+  options?: string[];
+}
+
+export interface EntrySection {
+
+  title: string;
+
+  fields: EntryField[];
+}

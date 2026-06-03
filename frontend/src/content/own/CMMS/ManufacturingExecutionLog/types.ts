@@ -41,11 +41,21 @@ export interface PreviewDetail {
   value: string;
 }
 
+/*
+  IMPORTANT UPDATE
+  Added "file?: File"
+  This fixes:
+  Property 'file' does not exist on type 'AttachmentItem'
+*/
+
 export interface AttachmentItem {
   id?: string;
   name: string;
   size: string;
   type?: string;
+
+  // NEW
+  file?: File;
 }
 
 export interface ManufacturingEntryConfig {

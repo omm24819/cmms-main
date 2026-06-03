@@ -119,7 +119,11 @@ export function ManufacturingLogCard({
   section: ManufacturingLogSection;
 }) {
   const theme = useTheme();
-  const emptyRows = Math.max(0, 5 - section.rows.length);
+
+  const emptyRows = Math.max(
+    0,
+    5 - section.rows.length
+  );
 
   return (
     <Stack spacing={1}>
@@ -133,9 +137,6 @@ export function ManufacturingLogCard({
           variant="contained"
           size="small"
           startIcon={<AddTwoToneIcon />}
-          sx={{
-            whiteSpace: 'nowrap'
-          }}
         >
           {section.addLabel}
         </Button>
@@ -149,31 +150,10 @@ export function ManufacturingLogCard({
         }}
       >
         <CardContent sx={{ p: 0 }}>
-          <SectionHeader
-            section={section}
-          />
+          <SectionHeader section={section} />
 
           <TableContainer>
-            <Table
-              size="small"
-              sx={{
-                tableLayout: 'fixed',
-                '& th': {
-                  fontWeight: 700,
-                  fontSize: 12,
-                  bgcolor: 'background.default'
-                },
-                '& th, & td': {
-                  borderColor: alpha(
-                    theme.palette.text.primary,
-                    0.16
-                  ),
-                  py: 1.1,
-                  px: 1,
-                  height: 38
-                }
-              }}
-            >
+            <Table size="small">
               <TableHead>
                 <TableRow>
                   {section.columns.map((column) => (
@@ -185,48 +165,32 @@ export function ManufacturingLogCard({
               </TableHead>
 
               <TableBody>
-                {section.rows.map((row, rowIndex) => (
+                {section.rows.map((row) => (
                   <TableRow key={row.join('-')}>
                     {row.map((cell, index) => (
-                      <TableCell key={`${cell}-${index}`}>
-                        {index === 0 ? (
-                          <Typography
-                            variant="subtitle2"
-                            noWrap
-                          >
-                            {cell}
-                          </Typography>
-                        ) : (
-                          <Typography
-                            variant="body2"
-                            noWrap
-                          >
-                            {cell}
-                          </Typography>
-                        )}
+                      <TableCell
+                        key={`${cell}-${index}`}
+                      >
+                        {cell}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))}
 
-                {Array.from({
-                  length: emptyRows
-                }).map((_, rowIndex) => (
-                  <TableRow
-                    key={`empty-${section.type}-${rowIndex}`}
-                  >
-                    {section.columns.map((column) => (
-                      <TableCell
-                        key={`${column}-${rowIndex}`}
-                      >
-                        {rowIndex === 0 &&
-                        section.rows.length === 0
-                          ? 'No records yet'
-                          : ''}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+                {section.rows.length === 0 &&
+                  Array.from({
+                    length: 5
+                  }).map((_, rowIndex) => (
+                    <TableRow
+                      key={`empty-${section.type}-${rowIndex}`}
+                    >
+                      {section.columns.map((column) => (
+                        <TableCell
+                          key={`${column}-${rowIndex}`}
+                        />
+                      ))}
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -235,23 +199,15 @@ export function ManufacturingLogCard({
             display="flex"
             justifyContent="center"
             sx={{
-              borderTop: `1px solid ${theme.palette.divider}`,
-              py: 1.1
+              py: 1
             }}
           >
             <Link
               component={RouterLink}
               to={section.listPath}
               underline="none"
-              variant="subtitle2"
-              sx={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 1
-              }}
             >
               {section.fullLogLabel}
-              <ArrowForwardTwoToneIcon fontSize="small" />
             </Link>
           </Box>
         </CardContent>
@@ -270,30 +226,23 @@ export function SectionHeader({
       direction="row"
       alignItems="center"
       justifyContent="space-between"
-      spacing={2}
-      sx={{ px: 1.5, py: 1 }}
+      sx={{
+        px: 2,
+        py: 1
+      }}
     >
       <Stack
         direction="row"
         spacing={1}
         alignItems="center"
-        minWidth={0}
       >
         <Chip
           label={section.number}
-          color="primary"
           size="small"
-          sx={{
-            width: 26,
-            height: 24,
-            borderRadius: 1,
-            '& .MuiChip-label': { px: 0 }
-          }}
+          color="primary"
         />
-        <Typography
-          variant="h5"
-          noWrap
-        >
+
+        <Typography variant="h5">
           {section.title}
         </Typography>
       </Stack>
@@ -302,16 +251,8 @@ export function SectionHeader({
         component={RouterLink}
         to={section.listPath}
         underline="none"
-        variant="subtitle2"
-        sx={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 1,
-          flexShrink: 0
-        }}
       >
         View All
-        <ArrowForwardTwoToneIcon fontSize="small" />
       </Link>
     </Stack>
   );
@@ -325,7 +266,10 @@ export function FormSectionBlock({
 }: {
   section: EntrySection;
   values: Record<string, string>;
-  onFieldChange: (name: string, value: string) => void;
+  onFieldChange: (
+    name: string,
+    value: string
+  ) => void;
   number: number;
 }) {
   const theme = useTheme();
@@ -338,38 +282,25 @@ export function FormSectionBlock({
         border: `1px solid ${theme.palette.divider}`
       }}
     >
-      <CardContent sx={{ p: 0 }}>
+      <CardContent>
         <Stack
           direction="row"
           spacing={1}
           alignItems="center"
-          sx={{
-            px: 2,
-            py: 1.4,
-            borderBottom: `1px solid ${theme.palette.divider}`
-          }}
+          mb={2}
         >
           <Chip
             label={number}
             color="primary"
             size="small"
-            sx={{
-              width: 24,
-              height: 24,
-              borderRadius: 1,
-              '& .MuiChip-label': { px: 0 }
-            }}
           />
+
           <Typography variant="h5">
             {section.title}
           </Typography>
         </Stack>
 
-        <Grid
-          container
-          spacing={2}
-          sx={{ p: 2 }}
-        >
+        <Grid container spacing={2}>
           {section.fields.map((field) => (
             <Grid
               item
@@ -381,8 +312,6 @@ export function FormSectionBlock({
                 fullWidth
                 size="small"
                 label={field.label}
-                select={Boolean(field.options)}
-                type={field.type}
                 value={values[field.name] || ''}
                 onChange={(event) =>
                   onFieldChange(
@@ -390,6 +319,8 @@ export function FormSectionBlock({
                     event.target.value
                   )
                 }
+                type={field.type}
+                select={Boolean(field.options)}
                 multiline={field.multiline}
                 rows={field.rows}
                 helperText={field.helperText}
@@ -432,9 +363,8 @@ export function EntryActionButtons({
   return (
     <Stack
       direction="row"
-      spacing={1.5}
+      spacing={2}
       justifyContent="flex-end"
-      flexWrap="wrap"
     >
       <Button
         variant="outlined"
@@ -442,7 +372,7 @@ export function EntryActionButtons({
         startIcon={<SaveTwoToneIcon />}
         onClick={onDraft}
       >
-        Save as Draft
+        Save Draft
       </Button>
 
       <Button
@@ -468,36 +398,56 @@ export function EntryUploadSidebar({
 }: {
   documentFiles: AttachmentItem[];
   productImageFiles: AttachmentItem[];
-  onDocumentFilesAdded: (files: File[]) => void;
-  onProductImageFilesAdded: (files: File[]) => void;
-  onDocumentFileRemove: (id: string) => void;
-  onProductImageFileRemove: (id: string) => void;
+  onDocumentFilesAdded: (
+    files: File[]
+  ) => void;
+  onProductImageFilesAdded: (
+    files: File[]
+  ) => void;
+  onDocumentFileRemove: (
+    id: string
+  ) => void;
+  onProductImageFileRemove: (
+    id: string
+  ) => void;
   showProductImageUpload?: boolean;
 }) {
   return (
     <Stack spacing={2}>
       <UploadPanel
         title="Document Upload"
-        description="Upload supporting documents"
-        helperText="PDF, JPG, PNG, DOCX"
+        description="Upload documents"
+        helperText="PDF, DOC, JPG"
         files={documentFiles}
-        onFilesAdded={onDocumentFilesAdded}
-        onFileRemove={onDocumentFileRemove}
+        onFilesAdded={
+          onDocumentFilesAdded
+        }
+        onFileRemove={
+          onDocumentFileRemove
+        }
       />
 
       {showProductImageUpload && (
         <UploadPanel
-          title="Product Image Upload"
-          description="Upload product or item image"
-          helperText="JPG or PNG"
+          title="Product Image"
+          description="Upload product image"
+          helperText="PNG, JPG"
           files={productImageFiles}
+          onFilesAdded={
+            onProductImageFilesAdded
+          }
+          onFileRemove={
+            onProductImageFileRemove
+          }
           icon="image"
           multiple={false}
           accept={{
-            'image/*': ['.jpg', '.jpeg', '.png']
+            'image/*': [
+              '.jpg',
+              '.jpeg',
+              '.png'
+            ]
           }}
-          onFilesAdded={onProductImageFilesAdded}
-          onFileRemove={onProductImageFileRemove}
         />
       )}
     </Stack>
@@ -519,8 +469,12 @@ function UploadPanel({
   description: string;
   helperText: string;
   files: AttachmentItem[];
-  onFilesAdded: (files: File[]) => void;
-  onFileRemove: (id: string) => void;
+  onFilesAdded: (
+    files: File[]
+  ) => void;
+  onFileRemove: (
+    id: string
+  ) => void;
   multiple?: boolean;
   accept?: Record<string, string[]>;
   icon?: 'document' | 'image';
@@ -535,7 +489,6 @@ function UploadPanel({
     multiple,
     accept,
     onDrop: (acceptedFiles) => {
-      // TODO(API): Upload accepted files to the backend document endpoint here.
       onFilesAdded(acceptedFiles);
     }
   });
@@ -543,99 +496,69 @@ function UploadPanel({
   return (
     <SidePanel title={title}>
       <Paper
-        variant="outlined"
         {...getRootProps()}
+        variant="outlined"
         sx={{
-          borderStyle: 'dashed',
-          py: 4,
-          px: 2,
+          p: 3,
           textAlign: 'center',
+          borderStyle: 'dashed',
           cursor: 'pointer',
           bgcolor: isDragActive
             ? alpha(
                 theme.palette.primary.main,
                 0.08
               )
-            : 'background.default',
-          borderColor: isDragActive
-            ? 'primary.main'
-            : 'divider'
+            : 'background.default'
         }}
       >
         <input {...getInputProps()} />
-        <CloudUploadTwoToneIcon color="primary" />
+
+        <CloudUploadTwoToneIcon
+          color="primary"
+        />
+
         <Typography variant="body2">
-          {isDragActive
-            ? 'Drop files to attach'
-            : description}
+          {description}
         </Typography>
+
         <Typography
           variant="caption"
           color="text.secondary"
-        >
-          Drag and drop files here or browse files
-        </Typography>
-        <Typography
-          display="block"
-          variant="caption"
-          color="text.secondary"
-          sx={{ mt: 0.5 }}
         >
           {helperText}
         </Typography>
       </Paper>
 
-      <Stack
-        spacing={1}
-        sx={{ mt: 1.5 }}
-      >
-        <Typography
-          variant="subtitle2"
-          color="text.secondary"
-        >
-          Attachment List
-        </Typography>
-
+      <Stack spacing={1} mt={2}>
         {files.length > 0 ? (
           files.map((file) => (
             <Stack
               key={file.id || file.name}
               direction="row"
-              spacing={1}
-              alignItems="center"
               justifyContent="space-between"
+              alignItems="center"
               sx={{
-                p: 1,
-                borderRadius: 1,
                 border: `1px solid ${theme.palette.divider}`,
-                bgcolor: 'background.default'
+                borderRadius: 1,
+                p: 1
               }}
             >
               <Stack
                 direction="row"
                 spacing={1}
                 alignItems="center"
-                minWidth={0}
               >
                 {icon === 'image' ? (
-                  <ImageTwoToneIcon
-                    color="primary"
-                    fontSize="small"
-                  />
+                  <ImageTwoToneIcon />
                 ) : (
-                  <InsertDriveFileTwoToneIcon
-                    color="primary"
-                    fontSize="small"
-                  />
+                  <InsertDriveFileTwoToneIcon />
                 )}
 
-                <Box minWidth={0}>
-                  <Typography
-                    variant="body2"
-                    noWrap
-                  >
+                <Box>
+                  <Typography variant="body2">
                     {file.name}
                   </Typography>
+
                   <Typography
                     variant="caption"
                     color="text.secondary"
@@ -648,13 +571,11 @@ function UploadPanel({
               <IconButton
                 size="small"
                 color="error"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  // TODO(API): Delete the attachment from backend storage before removing it locally.
+                onClick={() =>
                   onFileRemove(
                     file.id || file.name
-                  );
-                }}
+                  )
+                }
               >
                 <DeleteTwoToneIcon fontSize="small" />
               </IconButton>
@@ -665,7 +586,7 @@ function UploadPanel({
             variant="body2"
             color="text.secondary"
           >
-            No files attached yet
+            No files attached
           </Typography>
         )}
       </Stack>
@@ -693,10 +614,11 @@ function SidePanel({
       <CardContent>
         <Typography
           variant="h5"
-          sx={{ mb: 1.5 }}
+          mb={2}
         >
           {title}
         </Typography>
+
         {children}
       </CardContent>
     </Card>

@@ -1,3 +1,5 @@
+// src/content/own/CMMS/ManufacturingExecutionLog/EntryPage.tsx
+
 import {
   useContext,
   useEffect,
@@ -5,12 +7,17 @@ import {
   useState
 } from 'react';
 
+import axios from 'axios';
+
 import { Helmet } from 'react-helmet-async';
 
 import {
+  Alert,
   Box,
   Breadcrumbs,
+  CircularProgress,
   Link,
+  Snackbar,
   Stack,
   Typography
 } from '@mui/material';
@@ -28,6 +35,7 @@ import {
 } from './components';
 
 import { manufacturingEntryConfigs } from './mockData';
+
 import type {
   AttachmentItem,
   ManufacturingEntryConfig,
@@ -37,10 +45,13 @@ import type {
 function createInitialValues(
   config: ManufacturingEntryConfig
 ) {
+
   return config.sections.reduce<
     Record<string, string>
   >((accumulator, section) => {
+
     section.fields.forEach((field) => {
+
       accumulator[field.name] =
         field.autoGenerate
           ? generateLogId(config.type)
@@ -48,12 +59,14 @@ function createInitialValues(
     });
 
     return accumulator;
+
   }, {});
 }
 
 function generateLogId(
   type: ManufacturingLogType
 ) {
+
   const prefixes:
     Record<ManufacturingLogType, string> = {
     'raw-materials': 'RMP',
@@ -63,22 +76,24 @@ function generateLogId(
   };
 
   const now = new Date();
+
   const datePart = [
     now.getFullYear(),
     String(now.getMonth() + 1).padStart(2, '0'),
     String(now.getDate()).padStart(2, '0')
   ].join('');
+
   const randomPart = Math.floor(
     1000 + Math.random() * 9000
   );
 
-  // TODO(API): Replace this temporary frontend ID with a backend-generated sequence.
   return `${prefixes[type]}-${datePart}-${randomPart}`;
 }
 
 function createMockAttachments(
   config: ManufacturingEntryConfig
 ): AttachmentItem[] {
+
   return (config.attachments || []).map(
     (attachment, index) => ({
       ...attachment,
@@ -93,15 +108,20 @@ function fileToAttachment(
   file: File,
   prefix: string
 ): AttachmentItem {
+
   return {
     id: `${prefix}-${file.name}-${file.lastModified}`,
     name: file.name,
     size: formatFileSize(file.size),
-    type: file.type || 'Unknown'
+    type: file.type || 'Unknown',
+
+    // IMPORTANT
+    file
   };
 }
 
 function formatFileSize(size: number) {
+
   if (size < 1024) {
     return `${size} B`;
   }
@@ -110,7 +130,10 @@ function formatFileSize(size: number) {
     return `${(size / 1024).toFixed(1)} KB`;
   }
 
-  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+  return `${(
+    size /
+    (1024 * 1024)
+  ).toFixed(1)} MB`;
 }
 
 function EntryPage({
@@ -118,6 +141,7 @@ function EntryPage({
 }: {
   type: ManufacturingLogType;
 }) {
+
   const { setTitle } =
     useContext(TitleContext);
 
@@ -134,6 +158,18 @@ function EntryPage({
       initialValues
     );
 
+  const [loading, setLoading] =
+    useState(false);
+
+  const [successOpen, setSuccessOpen] =
+    useState(false);
+
+  const [errorOpen, setErrorOpen] =
+    useState(false);
+
+  const [errorMessage, setErrorMessage] =
+    useState('');
+
   const [documentFiles, setDocumentFiles] =
     useState<AttachmentItem[]>(() =>
       createMockAttachments(config)
@@ -145,22 +181,28 @@ function EntryPage({
   ] = useState<AttachmentItem[]>([]);
 
   useEffect(() => {
+
     setTitle(config.title);
+
   }, [config.title, setTitle]);
 
   useEffect(() => {
+
     setValues(initialValues);
-    // TODO(API): Replace mock attachment initialization with GET /api/manufacturing-execution-log/:type/:id/attachments.
+
     setDocumentFiles(
       createMockAttachments(config)
     );
+
     setProductImageFiles([]);
+
   }, [config, initialValues]);
 
   const handleFieldChange = (
     name: string,
     value: string
   ) => {
+
     setValues((previousValues) => ({
       ...previousValues,
       [name]: value
@@ -168,44 +210,167 @@ function EntryPage({
   };
 
   const handleDraft = () => {
-    // TODO(API): Persist draft with POST /api/manufacturing-execution-log/:type/drafts.
-    // TODO(API): Include documentFiles and productImageFiles in multipart upload once the backend accepts attachments.
+
     console.log(
-      'Manufacturing draft payload',
-      type,
-      values,
-      documentFiles,
-      productImageFiles
+      'Draft Data',
+      values
     );
+
     window.alert(
-      'Draft saved locally. Backend API wiring is marked in the code.'
+      'Draft saved locally'
     );
   };
 
-  const handleSubmit = () => {
-    // TODO(API): Create entry with POST /api/manufacturing-execution-log/:type.
-    // TODO(API): For edit mode later, update existing entries with PUT/PATCH /api/manufacturing-execution-log/:type/:id.
-    // TODO(API): Upload documentFiles and productImageFiles to the backend attachment service.
-    // TODO(API): Validate required fields with backend rules before final submission.
+  const handleSubmit = async () => {
+  try {
+    setLoading(true);
+
+    const formData = new FormData();
+
+    let apiUrl = '';
+    let payloadKey = '';
+
+    switch (type) {
+      case 'raw-materials':
+        apiUrl =
+          'http://localhost:8080/api/raw-material-procurement/create';
+
+        payloadKey = 'procurementData';
+
+        formData.append(
+          payloadKey,
+          JSON.stringify(values)
+        );
+
+        documentFiles.forEach((item) => {
+          if (item.file) {
+            formData.append(
+              'files',
+              item.file
+            );
+          }
+        });
+
+        break;
+
+      case 'components':
+        apiUrl =
+          'http://localhost:8080/api/component-manufacturing/create';
+
+        payloadKey = 'componentData';
+
+        formData.append(
+          payloadKey,
+          JSON.stringify(values)
+        );
+
+        documentFiles.forEach((item) => {
+          if (item.file) {
+            formData.append(
+              'documents',
+              item.file
+            );
+          }
+        });
+
+        productImageFiles.forEach((item) => {
+          if (item.file) {
+            formData.append(
+              'productImages',
+              item.file
+            );
+          }
+        });
+
+        break;
+
+      case 'assembly-line':
+        apiUrl =
+          'http://localhost:8080/api/assembly-line/create';
+
+        payloadKey = 'assemblyData';
+
+        formData.append(
+          payloadKey,
+          JSON.stringify(values)
+        );
+
+        break;
+
+      case 'logistics-trail':
+        apiUrl =
+          'http://localhost:8080/api/logistics-trail/create';
+
+        payloadKey = 'logisticsData';
+
+        formData.append(
+          payloadKey,
+          JSON.stringify(values)
+        );
+
+        break;
+
+      default:
+        throw new Error(
+          'Unsupported entry type'
+        );
+    }
+
+    const token =
+      localStorage.getItem(
+        'accessToken'
+      );
+
+    const response =
+      await axios.post(
+        apiUrl,
+        formData,
+        {
+          headers: {
+            'Content-Type':
+              'multipart/form-data',
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
     console.log(
-      'Manufacturing submit payload',
-      type,
-      values,
-      documentFiles,
-      productImageFiles
+      'SUCCESS RESPONSE',
+      response.data
     );
-    window.alert(
-      'Entry submitted locally. Backend API wiring is marked in the code.'
+
+    setSuccessOpen(true);
+
+    setValues(initialValues);
+
+    setDocumentFiles([]);
+
+    setProductImageFiles([]);
+  } catch (error: any) {
+    console.error(error);
+
+    setErrorMessage(
+      error?.response?.data?.message ||
+        'Failed to submit entry'
     );
-  };
+
+    setErrorOpen(true);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleDocumentFilesAdded = (
     files: File[]
   ) => {
+
     setDocumentFiles((previousFiles) => [
       ...previousFiles,
       ...files.map((file) =>
-        fileToAttachment(file, 'document')
+        fileToAttachment(
+          file,
+          'document'
+        )
       )
     ]);
   };
@@ -213,11 +378,15 @@ function EntryPage({
   const handleProductImageFilesAdded = (
     files: File[]
   ) => {
+
     setProductImageFiles(
       files
         .slice(0, 1)
         .map((file) =>
-          fileToAttachment(file, 'product-image')
+          fileToAttachment(
+            file,
+            'product-image'
+          )
         )
     );
   };
@@ -225,11 +394,12 @@ function EntryPage({
   const handleDocumentFileRemove = (
     fileId: string
   ) => {
-    // TODO(API): Call DELETE /api/manufacturing-execution-log/:type/attachments/:fileId when backend storage exists.
+
     setDocumentFiles((previousFiles) =>
       previousFiles.filter(
         (file) =>
-          (file.id || file.name) !== fileId
+          (file.id || file.name) !==
+          fileId
       )
     );
   };
@@ -237,42 +407,52 @@ function EntryPage({
   const handleProductImageFileRemove = (
     fileId: string
   ) => {
-    // TODO(API): Call DELETE /api/manufacturing-execution-log/:type/product-image/:fileId when backend storage exists.
-    setProductImageFiles((previousFiles) =>
-      previousFiles.filter(
-        (file) =>
-          (file.id || file.name) !== fileId
-      )
+
+    setProductImageFiles(
+      (previousFiles) =>
+        previousFiles.filter(
+          (file) =>
+            (file.id || file.name) !==
+            fileId
+        )
     );
   };
 
   return (
     <>
       <Helmet>
-        <title>{config.title}</title>
+        <title>
+          {config.title}
+        </title>
       </Helmet>
 
       <Box
         p={{ xs: 2, md: 3 }}
         sx={{
-          bgcolor: 'background.default'
+          bgcolor:
+            'background.default'
         }}
       >
         <Stack spacing={2.5}>
+
           <Stack spacing={1}>
+
             <Breadcrumbs>
+
               <Link
                 component={RouterLink}
                 to="/app/home"
               >
                 Dashboard
               </Link>
+
               <Link
                 component={RouterLink}
                 to="/app/manufacturing-execution-log"
               >
                 Manufacturing Execution Log
               </Link>
+
               <Link
                 component={RouterLink}
                 to={config.listPath}
@@ -282,9 +462,11 @@ function EntryPage({
                   ''
                 )}
               </Link>
+
               <Typography>
                 New Entry
               </Typography>
+
             </Breadcrumbs>
 
             <Stack
@@ -299,13 +481,17 @@ function EntryPage({
               }}
               spacing={2}
             >
+
               <Box>
+
                 <Typography variant="h2">
                   {config.title}
                 </Typography>
+
                 <Typography color="text.secondary">
                   {config.subtitle}
                 </Typography>
+
               </Box>
 
               <Stack
@@ -319,11 +505,13 @@ function EntryPage({
                   sm: 'center'
                 }}
               >
+
                 <EntryActionButtons
                   compact
                   onDraft={handleDraft}
                   onSubmit={handleSubmit}
                 />
+
               </Stack>
             </Stack>
           </Stack>
@@ -336,6 +524,7 @@ function EntryPage({
             spacing={2}
             alignItems="flex-start"
           >
+
             <Stack
               spacing={2}
               sx={{
@@ -343,6 +532,7 @@ function EntryPage({
                 width: '100%'
               }}
             >
+
               {config.sections.map(
                 (section, index) => (
                   <FormSectionBlock
@@ -361,6 +551,16 @@ function EntryPage({
                 onDraft={handleDraft}
                 onSubmit={handleSubmit}
               />
+
+              {loading && (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                >
+                  <CircularProgress />
+                </Box>
+              )}
+
             </Stack>
 
             <Box
@@ -372,8 +572,11 @@ function EntryPage({
                 flexShrink: 0
               }}
             >
+
               <EntryUploadSidebar
-                documentFiles={documentFiles}
+                documentFiles={
+                  documentFiles
+                }
                 productImageFiles={
                   productImageFiles
                 }
@@ -390,13 +593,39 @@ function EntryPage({
                   handleProductImageFileRemove
                 }
                 showProductImageUpload={
-                  config.type !== 'raw-materials'
+                  config.type !==
+                  'raw-materials'
                 }
               />
+
             </Box>
           </Stack>
         </Stack>
       </Box>
+
+      <Snackbar
+        open={successOpen}
+        autoHideDuration={3000}
+        onClose={() =>
+          setSuccessOpen(false)
+        }
+      >
+        <Alert severity="success">
+          Entry submitted successfully
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={errorOpen}
+        autoHideDuration={3000}
+        onClose={() =>
+          setErrorOpen(false)
+        }
+      >
+        <Alert severity="error">
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

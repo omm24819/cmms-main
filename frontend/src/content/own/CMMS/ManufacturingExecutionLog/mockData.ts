@@ -43,10 +43,10 @@ export const manufacturingLogSections:
     columns: [
       'Log ID',
       'Component Name',
-      'Associated Product',
-      'Build Status',
+      'Associated Product UID',
+      'PCB Version',
       'Functional Test',
-      'QA Status'
+      'calibiration Result'
     ],
     rows: []
   },
@@ -62,12 +62,13 @@ export const manufacturingLogSections:
     newPath: `${basePath}/assembly-line/new`,
     columns: [
       'Log ID',
+      'Production Order Id',
+      'Associated Product Name',
+      'Assembly Line',
       'Assembly Station',
-      'Operator',
-      'Start Time',
-      'End Time',
-      'Status',
-      'Yield (%)'
+      'Shift',
+      'Good Units',
+      'Production Yields'
     ],
     rows: []
   },
@@ -83,11 +84,12 @@ export const manufacturingLogSections:
     newPath: `${basePath}/logistics-trail/new`,
     columns: [
       'Log ID',
-      'From Warehouse',
-      'To Warehouse',
-      'Movement Time',
-      'Status',
-      'Transit Delay'
+      'Transfer Date Time',
+      'Movement Type',
+      'Source Warehouse',
+      'Destination Warehouse',
+      'quantityToTransfer',
+      'Status'
     ],
     rows: []
   }
@@ -195,7 +197,7 @@ export const manufacturingEntryConfigs:
           { name: 'componentId', label: 'Log ID *', value: '', autoGenerate: true, readOnly: true, width: 3 },
           { name: 'componentSerial', label: 'Component Serial / Lot No. *', value: '', width: 3 },
           { name: 'componentName', label: 'Component Name *', value: '', width: 3 },
-          { name: 'associatedProduct', label: 'Associated Product *', value: '', width: 3 },
+          { name: 'associatedProductUid', label: 'Associated Product UID*', value: '', width: 3 },
           { name: 'pcbVersion', label: 'PCB Version *', value: '', width: 3 },
           { name: 'cadVersion', label: 'CAD Version', value: '', width: 3 },
           { name: 'bomVersion', label: 'BOM Version', value: '', width: 3 },
