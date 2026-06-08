@@ -153,6 +153,31 @@ const ProductDetails = Loader(
 );
 const ManufacturingExecutionLog = Loader(
   lazy(() => import('../content/own/CMMS/ManufacturingExecutionLog'))
+);const ManufacturingInventory = Loader(
+  lazy(
+    () =>
+      import(
+        '../content/own/CMMS/ManufacturingExecutionLog/InventoryPage'
+      )
+  )
+);
+const MaintenanceDashboard = Loader(
+  lazy(() => import('../content/own/CMMS/maintenance-service/DashboardPage'))
+);
+const NewMaintenanceTicket = Loader(
+  lazy(() => import('../content/own/CMMS/maintenance-service/NewTicketPage'))
+);
+const MaintenanceTicketDetail = Loader(
+  lazy(() => import('../content/own/CMMS/maintenance-service/TicketDetailPage'))
+);
+const MaintenanceOnsiteTracking = Loader(
+  lazy(() => import('../content/own/CMMS/maintenance-service/OnsiteTrackingPage'))
+);
+const OnsiteMaintenanceTracking = Loader(
+  lazy(() => import('../content/own/CMMS/maintenance-service/OnsiteMaintenancePage'))
+);
+const OffsiteRepairLog = Loader(
+  lazy(() => import('../content/own/CMMS/maintenance-service/OffsiteRepairLogPage'))
 );
 const RawMaterialLogList = Loader(
   lazy(
@@ -319,6 +344,10 @@ const appRoutes = [
         element: <ManufacturingExecutionLog />
       },
       {
+        path: 'inventory',
+        element: <ManufacturingInventory />
+      },
+      {
         path: 'raw-materials',
         element: <RawMaterialLogList />
       },
@@ -365,6 +394,34 @@ const appRoutes = [
       {
         path: 'logistics-trail/:logId',
         element: <LogisticsTrailLogDetail />
+      }    ]
+  },
+  {
+    path: 'maintenance',
+    children: [
+      {
+        path: '',
+        element: <MaintenanceDashboard />
+      },
+      {
+        path: 'new',
+        element: <NewMaintenanceTicket />
+      },
+      {
+        path: 'onsite-tracking',
+        element: <OnsiteMaintenanceTracking />
+      },
+      {
+        path: 'offsite-repair',
+        element: <OffsiteRepairLog />
+      },
+      {
+        path: 'onsite/:ticketId',
+        element: <MaintenanceOnsiteTracking />
+      },
+      {
+        path: ':ticketId',
+        element: <MaintenanceTicketDetail />
       }
     ]
   },

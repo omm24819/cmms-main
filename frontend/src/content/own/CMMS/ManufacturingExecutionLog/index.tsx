@@ -18,6 +18,7 @@ import {
 import { TitleContext } from 'src/contexts/TitleContext';
 
 import {
+  ManufacturingExecutionSidebar,
   ManufacturingLogCard,
   ManufacturingTopBar
 } from './components';
@@ -424,25 +425,53 @@ function ManufacturingExecutionLogPage() {
             }
           />
 
-          <Grid
-            container
+          <Stack
+            direction={{
+              xs: 'column',
+              xl: 'row'
+            }}
             spacing={3}
+            alignItems="flex-start"
           >
-            {filteredSections.map(
-              (section) => (
-                <Grid
-                  item
-                  xs={12}
-                  xl={6}
-                  key={section.type}
-                >
-                  <ManufacturingLogCard
-                    section={section}
-                  />
-                </Grid>
-              )
-            )}
-          </Grid>
+            <Box
+              sx={{
+                flex: 1,
+                width: '100%'
+              }}
+            >
+              <Grid
+                container
+                spacing={3}
+              >
+                {filteredSections.map(
+                  (section) => (
+                    <Grid
+                      item
+                      xs={12}
+                      lg={6}
+                      key={section.type}
+                    >
+                      <ManufacturingLogCard
+                        section={section}
+                      />
+                    </Grid>
+                  )
+                )}
+              </Grid>
+            </Box>
+
+            <Box
+              sx={{
+                width: {
+                  xs: '100%',
+                  xl: 360
+                },
+                flexShrink: 0
+              }}
+            >
+              <ManufacturingExecutionSidebar />
+            </Box>
+          </Stack>
         </Stack>
       </Box>
     </>

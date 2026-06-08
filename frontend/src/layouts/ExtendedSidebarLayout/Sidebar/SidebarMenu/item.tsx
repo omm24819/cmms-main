@@ -5,11 +5,13 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import PropTypes from 'prop-types';
 import {
-  Button,
-  Tooltip,
   Badge,
+  Box,
+  Button,
   Collapse,
+  IconButton,
   ListItem,
+  Tooltip,
   TooltipProps,
   tooltipClasses,
   styled
@@ -66,32 +68,71 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
   };
 
   if (children) {
+    const handleNavigate = (): void => {
+      closeSidebar();
+    };
+
     return (
       <ListItem component="div" className="Mui-children" key={name} {...rest}>
-        <Button
-          className={clsx({ active: menuToggle })}
-          startIcon={Icon && <Icon />}
-          endIcon={
-            menuToggle ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />
-          }
-          onClick={toggleMenu}
-          sx={{ textAlign: 'start' }}
+        <Box
+          className={clsx('MuiMenuItem-parent', { active: menuToggle })}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%'
+          }}
         >
-          {badgeTooltip ? (
-            <TooltipWrapper title={badgeTooltip} arrow placement="right">
-              {badge === '' ? (
-                <Badge color="primary" variant="dot" />
-              ) : (
-                <Badge badgeContent={badge} />
-              )}
-            </TooltipWrapper>
-          ) : badge === '' ? (
-            <Badge color="primary" variant="dot" />
-          ) : (
-            <Badge badgeContent={badge} />
-          )}
-          {t(name)}
-        </Button>
+          <Button
+            component={link ? RouterLink : 'button'}
+            to={link || undefined}
+            className={clsx({ active: menuToggle })}
+            startIcon={Icon && <Icon />}
+            onClick={handleNavigate}
+            sx={{
+              textAlign: 'start',
+              flex: 1,
+              justifyContent: 'flex-start'
+            }}
+          >
+            {badgeTooltip ? (
+              <TooltipWrapper title={badgeTooltip} arrow placement="right">
+                {badge === '' ? (
+                  <Badge color="primary" variant="dot" />
+                ) : (
+                  <Badge badgeContent={badge} />
+                )}
+              </TooltipWrapper>
+            ) : badge === '' ? (
+              <Badge color="primary" variant="dot" />
+            ) : (
+              <Badge badgeContent={badge} />
+            )}
+            {t(name)}
+          </Button>
+
+          <IconButton
+            size="small"
+            disableRipple
+            onClick={toggleMenu}
+            className="MuiMenuItem-expandToggle"
+            sx={{
+              color: 'inherit',
+              p: 0.5,
+              mr: 1,
+              flexShrink: 0,
+              '&:hover': {
+                backgroundColor: 'transparent'
+              }
+            }}
+          >
+            {menuToggle ? (
+              <ExpandLessTwoToneIcon fontSize="small" />
+            ) : (
+              <ExpandMoreTwoToneIcon fontSize="small" />
+            )}
+          </IconButton>
+        </Box>
+
         <Collapse in={menuToggle}>{children}</Collapse>
       </ListItem>
     );

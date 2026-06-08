@@ -109,6 +109,32 @@ const SubMenuWrapper = styled(Box)(
         &.Mui-children {
           flex-direction: column;
 
+          .MuiMenuItem-parent {
+            display: flex;
+            align-items: center;
+            width: 100%;
+
+            .MuiButton-root {
+              padding: ${theme.spacing(1.2, 1.5)};
+              min-width: 0;
+            }
+
+            .MuiMenuItem-expandToggle {
+              color: ${theme.colors.alpha.trueWhite[50]};
+              padding: ${theme.spacing(0.5)};
+              flex-shrink: 0;
+              border-radius: ${theme.general.borderRadiusSm};
+
+              &:hover {
+                color: ${theme.colors.alpha.trueWhite[100]};
+              }
+            }
+
+            &.active .MuiMenuItem-expandToggle {
+              color: ${theme.colors.alpha.trueWhite[100]};
+            }
+          }
+
           .MuiBadge-root {
             position: absolute;
             right: ${theme.spacing(7)};

@@ -82,8 +82,8 @@ export const cmmsModules: ModuleCardData[] = [
       'Manage service history, maintenance activity, and repair records.',
     icon: HandymanTwoToneIcon,
     color: '#f97316',
-    path: '/app/home?module=maintenance-service',
-    status: 'coming-soon'
+    path: '/app/maintenance',
+    status: 'active'
   },
   {
     id: 'inventory-procurement',

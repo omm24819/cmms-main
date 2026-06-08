@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import BuildCircleTwoToneIcon from '@mui/icons-material/BuildCircleTwoTone';
+import ConstructionTwoToneIcon from '@mui/icons-material/ConstructionTwoTone';
 import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 import GroupsTwoToneIcon from '@mui/icons-material/GroupsTwoTone';
 import HandymanTwoToneIcon from '@mui/icons-material/HandymanTwoTone';
@@ -47,16 +49,27 @@ const ownMenuItems: MenuItems[] = [
         link: '/app/product-lifecycle',
         icon: Inventory2TwoToneIcon,
         matchPrefix: true
-      },
-      {
+      },      {
         name: 'Manufacturing Execution Log',
         link: '/app/manufacturing-execution-log',
         icon: PrecisionManufacturingTwoToneIcon
       },
       {
         name: 'Maintenance & Service Log',
-        link: '/app/home?module=maintenance-service',
-        icon: HandymanTwoToneIcon
+        link: '/app/maintenance',
+        icon: HandymanTwoToneIcon,
+        items: [
+          {
+            name: 'On-site Maintenance Tracking',
+            link: '/app/maintenance/onsite-tracking',
+            icon: ConstructionTwoToneIcon
+          },
+          {
+            name: 'Offsite / Factory Repair Log',
+            link: '/app/maintenance/offsite-repair',
+            icon: BuildCircleTwoToneIcon
+          }
+        ]
       },
       {
         name: 'Inventory & Procurement',

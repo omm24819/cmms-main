@@ -58,6 +58,27 @@ export interface AttachmentItem {
   file?: File;
 }
 
+export interface FleetbaseInventoryDetails {
+  transferId: string;
+  vehicleId: string;
+  driverName: string;
+  dispatchStatus: string;
+  eta: string;
+}
+
+export interface RawMaterialInventoryItem {
+  id: string;
+  materialId: string;
+  materialName: string;
+  batchId: string;
+  quantity: string;
+  unit: string;
+  warehouseLocation: string;
+  status: string;
+  lastUpdated: string;
+  fleetbase: FleetbaseInventoryDetails;
+}
+
 export interface ManufacturingEntryConfig {
   type: ManufacturingLogType;
   title: string;

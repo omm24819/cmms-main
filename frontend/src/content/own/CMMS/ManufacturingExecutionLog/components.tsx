@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react';
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   alpha,
   Box,
   Button,
@@ -29,8 +32,11 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import ImageTwoToneIcon from '@mui/icons-material/ImageTwoTone';
 import InsertDriveFileTwoToneIcon from '@mui/icons-material/InsertDriveFileTwoTone';
+import Inventory2TwoToneIcon from '@mui/icons-material/Inventory2TwoTone';
+import LocalShippingTwoToneIcon from '@mui/icons-material/LocalShippingTwoTone';
 import SaveTwoToneIcon from '@mui/icons-material/SaveTwoTone';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import SendTwoToneIcon from '@mui/icons-material/SendTwoTone';
@@ -44,7 +50,8 @@ import {
 import type {
   AttachmentItem,
   EntrySection,
-  ManufacturingLogSection
+  ManufacturingLogSection,
+  RawMaterialInventoryItem
 } from './types';
 
 export function ManufacturingTopBar({
@@ -451,6 +458,266 @@ export function EntryUploadSidebar({
         />
       )}
     </Stack>
+  );
+}
+
+export function ManufacturingExecutionSidebar() {
+  const theme = useTheme();
+
+  return (
+    <Stack spacing={2}>
+      <Accordion
+        defaultExpanded={false}
+        sx={{
+          borderRadius: 1,
+          boxShadow: 'none',
+          border: `1px solid ${theme.palette.divider}`,
+          '&:before': {
+            display: 'none'
+          }
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreTwoToneIcon />}
+        >
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+          >
+            <Inventory2TwoToneIcon color="primary" />
+
+            <Typography variant="h5">
+              Inventory
+            </Typography>
+          </Stack>
+        </AccordionSummary>
+
+        <AccordionDetails>
+          <Button
+            fullWidth
+            component={RouterLink}
+            to="/app/manufacturing-execution-log/inventory"
+            variant="outlined"
+            startIcon={<Inventory2TwoToneIcon />}
+            sx={{
+              justifyContent: 'flex-start'
+            }}
+          >
+            Open Inventory
+          </Button>
+        </AccordionDetails>
+      </Accordion>
+    </Stack>
+  );
+}
+
+export function RawMaterialInventoryPanel({
+  inventoryItems
+}: {
+  inventoryItems: RawMaterialInventoryItem[];
+}) {
+  const theme = useTheme();
+
+  return (
+    <Card
+      sx={{
+        borderRadius: 1,
+        boxShadow: 'none',
+        border: `1px solid ${theme.palette.divider}`
+      }}
+    >
+      <CardContent>
+        <Stack spacing={2}>
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+          >
+            <Inventory2TwoToneIcon color="primary" />
+
+            <Box>
+              <Typography variant="h5">
+                Raw Material Inventory
+              </Typography>
+
+              <Typography
+                variant="caption"
+                color="text.secondary"
+              >
+                Frontend-only raw material and Fleetbase details
+              </Typography>
+            </Box>
+          </Stack>
+
+          {/* TODO(API): Replace this frontend-only inventory state with a backend inventory lookup endpoint. */}
+          {inventoryItems.length > 0 ? (
+            inventoryItems.map((item) => (
+              <Card
+                key={item.id}
+                variant="outlined"
+                sx={{
+                  borderRadius: 1,
+                  boxShadow: 'none'
+                }}
+              >
+                <CardContent>
+                  <Stack spacing={1.5}>
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      spacing={1}
+                      alignItems="flex-start"
+                    >
+                      <Box minWidth={0}>
+                        <Typography
+                          variant="subtitle2"
+                          noWrap
+                        >
+                          {item.materialName}
+                        </Typography>
+
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                        >
+                          {item.materialId}
+                        </Typography>
+                      </Box>
+
+                      <Chip
+                        size="small"
+                        label={item.status}
+                        color={
+                          item.status === 'Available'
+                            ? 'success'
+                            : item.status === 'Low Stock'
+                            ? 'warning'
+                            : 'default'
+                        }
+                      />
+                    </Stack>
+
+                    <Grid container spacing={1}>
+                      <InventoryDetail
+                        label="Batch ID"
+                        value={item.batchId}
+                      />
+                      <InventoryDetail
+                        label="Quantity"
+                        value={`${item.quantity} ${item.unit}`}
+                      />
+                      <InventoryDetail
+                        label="Warehouse/Location"
+                        value={
+                          item.warehouseLocation
+                        }
+                      />
+                      <InventoryDetail
+                        label="Last Updated"
+                        value={item.lastUpdated}
+                      />
+                    </Grid>
+
+                    <Paper
+                      variant="outlined"
+                      sx={{
+                        p: 1.25,
+                        bgcolor:
+                          'background.default',
+                        borderRadius: 1
+                      }}
+                    >
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        alignItems="center"
+                        sx={{ mb: 1 }}
+                      >
+                        <LocalShippingTwoToneIcon
+                          color="primary"
+                          fontSize="small"
+                        />
+
+                        <Typography variant="subtitle2">
+                          Fleetbase
+                        </Typography>
+                      </Stack>
+
+                      {/* TODO(API): Replace Fleetbase values with Fleetbase shipment/fleet API data. */}
+                      <Grid container spacing={1}>
+                        <InventoryDetail
+                          label="Transfer ID"
+                          value={
+                            item.fleetbase.transferId
+                          }
+                        />
+                        <InventoryDetail
+                          label="Vehicle ID"
+                          value={
+                            item.fleetbase.vehicleId
+                          }
+                        />
+                        <InventoryDetail
+                          label="Driver"
+                          value={
+                            item.fleetbase.driverName
+                          }
+                        />
+                        <InventoryDetail
+                          label="Dispatch Status"
+                          value={
+                            item.fleetbase
+                              .dispatchStatus
+                          }
+                        />
+                        <InventoryDetail
+                          label="ETA"
+                          value={item.fleetbase.eta}
+                        />
+                      </Grid>
+                    </Paper>
+                  </Stack>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <Typography
+              variant="body2"
+              color="text.secondary"
+            >
+              No raw material inventory selected.
+            </Typography>
+          )}
+        </Stack>
+      </CardContent>
+    </Card>
+  );
+}
+
+function InventoryDetail({
+  label,
+  value
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <Grid item xs={12} sm={6}>
+      <Typography
+        variant="caption"
+        color="text.secondary"
+      >
+        {label}
+      </Typography>
+
+      <Typography
+        variant="body2"
+        sx={{ wordBreak: 'break-word' }}
+      >
+        {value || '-'}
+      </Typography>
+    </Grid>
   );
 }
 
